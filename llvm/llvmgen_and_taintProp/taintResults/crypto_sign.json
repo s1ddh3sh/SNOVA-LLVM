@@ -1,0 +1,21 @@
+{
+  "0": {
+    "instr": "  %skx_d = alloca [96 x i8], align 1",
+    "type": "AllocaInst"
+  },
+  "4": {
+    "instr": "  %call = call i32 @_SNOVA_I_S_AES_ref_sk_expand(ptr noundef nonnull %skx_d, ptr noundef %sk) #3, !dbg !154",
+    "type": "CallInst",
+    "callee": "_SNOVA_I_S_AES_ref_sk_expand"
+  },
+  "8": {
+    "instr": "  %call7 = call i32 @_SNOVA_I_S_AES_ref_sign(ptr noundef nonnull %skx_d, ptr noundef nonnull %sig, ptr noundef nonnull %digest, i32 noundef 64, ptr noundef nonnull %salt) #3, !dbg !169",
+    "type": "CallInst",
+    "callee": "_SNOVA_I_S_AES_ref_sign"
+  },
+  "18": {
+    "instr": "  call void @snova_secure_clear(ptr noundef nonnull %skx_d, i32 noundef 96) #3, !dbg !181",
+    "type": "CallInst",
+    "callee": "snova_secure_clear"
+  }
+}

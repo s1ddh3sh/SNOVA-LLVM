@@ -1,0 +1,179 @@
+{
+  "5": {
+    "instr": "  %arrayidx = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !152",
+    "type": "GetElementPtrInst"
+  },
+  "6": {
+    "instr": "  %0 = load i64, ptr %arrayidx, align 8, !dbg !152",
+    "type": "LoadInst"
+  },
+  "7": {
+    "instr": "  %cmp1 = icmp ugt i64 %0, %conv, !dbg !153",
+    "type": "CmpInst"
+  },
+  "9": {
+    "instr": "  %conv3 = zext i32 %r to i64, !dbg !155",
+    "type": "CastInst"
+  },
+  "10": {
+    "instr": "  %arrayidx4 = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !157",
+    "type": "GetElementPtrInst"
+  },
+  "11": {
+    "instr": "  %1 = load i64, ptr %arrayidx4, align 8, !dbg !157",
+    "type": "LoadInst"
+  },
+  "12": {
+    "instr": "  %sub = sub i64 %conv3, %1, !dbg !158",
+    "type": "BinOp"
+  },
+  "14": {
+    "instr": "  %add = add i64 %sub, %conv5, !dbg !160",
+    "type": "BinOp"
+  },
+  "15": {
+    "instr": "  %shr = lshr i64 %add, 3, !dbg !161",
+    "type": "BinOp"
+  },
+  "16": {
+    "instr": "  %idxprom = trunc i64 %shr to i32, !dbg !162",
+    "type": "CastInst"
+  },
+  "17": {
+    "instr": "  %arrayidx6 = getelementptr inbounds nuw i64, ptr %s_inc, i32 %idxprom, !dbg !162",
+    "type": "GetElementPtrInst"
+  },
+  "18": {
+    "instr": "  %2 = load i64, ptr %arrayidx6, align 8, !dbg !162",
+    "type": "LoadInst"
+  },
+  "19": {
+    "instr": "  %conv7 = zext i32 %r to i64, !dbg !163",
+    "type": "CastInst"
+  },
+  "20": {
+    "instr": "  %arrayidx8 = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !164",
+    "type": "GetElementPtrInst"
+  },
+  "21": {
+    "instr": "  %3 = load i64, ptr %arrayidx8, align 8, !dbg !164",
+    "type": "LoadInst"
+  },
+  "22": {
+    "instr": "  %sub9 = sub i64 %conv7, %3, !dbg !165",
+    "type": "BinOp"
+  },
+  "24": {
+    "instr": "  %add11 = add i64 %sub9, %conv10, !dbg !167",
+    "type": "BinOp"
+  },
+  "25": {
+    "instr": "  %and = shl i64 %add11, 3, !dbg !168",
+    "type": "BinOp"
+  },
+  "26": {
+    "instr": "  %mul = and i64 %and, 56, !dbg !168",
+    "type": "BinOp"
+  },
+  "27": {
+    "instr": "  %shr12 = lshr i64 %2, %mul, !dbg !169",
+    "type": "BinOp"
+  },
+  "28": {
+    "instr": "  %conv13 = trunc i64 %shr12 to i8, !dbg !170",
+    "type": "CastInst"
+  },
+  "29": {
+    "instr": "  %arrayidx14 = getelementptr inbounds nuw i8, ptr %h, i32 %i.0, !dbg !171",
+    "type": "GetElementPtrInst"
+  },
+  "30": {
+    "instr": "  store i8 %conv13, ptr %arrayidx14, align 1, !dbg !172",
+    "type": "StoreInst"
+  },
+  "34": {
+    "instr": "  %add.ptr = getelementptr inbounds nuw i8, ptr %h, i32 %i.0.lcssa, !dbg !178",
+    "type": "GetElementPtrInst"
+  },
+  "37": {
+    "instr": "  %arrayidx17 = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !181",
+    "type": "GetElementPtrInst"
+  },
+  "38": {
+    "instr": "  %4 = load i64, ptr %arrayidx17, align 8, !dbg !182",
+    "type": "LoadInst"
+  },
+  "39": {
+    "instr": "  %sub18 = sub i64 %4, %conv16, !dbg !182",
+    "type": "BinOp"
+  },
+  "40": {
+    "instr": "  store i64 %sub18, ptr %arrayidx17, align 8, !dbg !182",
+    "type": "StoreInst"
+  },
+  "43": {
+    "instr": "  %h.addr.0 = phi ptr [ %add.ptr, %for.end ], [ %add.ptr39, %for.end38 ], !dbg !140",
+    "type": "PHINode"
+  },
+  "46": {
+    "instr": "  call fastcc void @KeccakF1600_StatePermute(ptr noundef nonnull %s_inc) #3, !dbg !185",
+    "type": "CallInst",
+    "callee": "KeccakF1600_StatePermute"
+  },
+  "47": {
+    "instr": "  %5 = icmp ult i32 %outlen.addr.0, %r, !dbg !187",
+    "type": "CmpInst"
+  },
+  "48": {
+    "instr": "  %6 = select i1 %5, i32 %outlen.addr.0, i32 %r, !dbg !187",
+    "type": "Other"
+  },
+  "51": {
+    "instr": "  %exitcond1 = icmp ne i32 %i.1, %6, !dbg !190",
+    "type": "CmpInst"
+  },
+  "54": {
+    "instr": "  %arrayidx30 = getelementptr inbounds nuw i64, ptr %s_inc, i32 %shr29, !dbg !195",
+    "type": "GetElementPtrInst"
+  },
+  "55": {
+    "instr": "  %7 = load i64, ptr %arrayidx30, align 8, !dbg !195",
+    "type": "LoadInst"
+  },
+  "59": {
+    "instr": "  %shr33 = lshr i64 %7, %sh_prom, !dbg !197",
+    "type": "BinOp"
+  },
+  "60": {
+    "instr": "  %conv34 = trunc i64 %shr33 to i8, !dbg !198",
+    "type": "CastInst"
+  },
+  "61": {
+    "instr": "  %arrayidx35 = getelementptr inbounds nuw i8, ptr %h.addr.0, i32 %i.1, !dbg !199",
+    "type": "GetElementPtrInst"
+  },
+  "62": {
+    "instr": "  store i8 %conv34, ptr %arrayidx35, align 1, !dbg !200",
+    "type": "StoreInst"
+  },
+  "66": {
+    "instr": "  %add.ptr39 = getelementptr inbounds nuw i8, ptr %h.addr.0, i32 %i.1.lcssa, !dbg !205",
+    "type": "GetElementPtrInst"
+  },
+  "68": {
+    "instr": "  %sub41 = sub i32 %r, %i.1.lcssa, !dbg !207",
+    "type": "BinOp"
+  },
+  "69": {
+    "instr": "  %conv42 = zext i32 %sub41 to i64, !dbg !208",
+    "type": "CastInst"
+  },
+  "70": {
+    "instr": "  %arrayidx43 = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !209",
+    "type": "GetElementPtrInst"
+  },
+  "71": {
+    "instr": "  store i64 %conv42, ptr %arrayidx43, align 8, !dbg !210",
+    "type": "StoreInst"
+  }
+}

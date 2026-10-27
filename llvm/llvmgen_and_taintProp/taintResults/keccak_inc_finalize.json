@@ -1,0 +1,98 @@
+{
+  "0": {
+    "instr": "  %arrayidx = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !143",
+    "type": "GetElementPtrInst"
+  },
+  "1": {
+    "instr": "  %0 = load i64, ptr %arrayidx, align 8, !dbg !143",
+    "type": "LoadInst"
+  },
+  "2": {
+    "instr": "  %and = shl i64 %0, 3, !dbg !144",
+    "type": "BinOp"
+  },
+  "3": {
+    "instr": "  %mul = and i64 %and, 56, !dbg !144",
+    "type": "BinOp"
+  },
+  "4": {
+    "instr": "  %shl = shl nuw nsw i64 31, %mul, !dbg !145",
+    "type": "BinOp"
+  },
+  "5": {
+    "instr": "  %shr = lshr i64 %0, 3, !dbg !146",
+    "type": "BinOp"
+  },
+  "6": {
+    "instr": "  %idxprom = trunc i64 %shr to i32, !dbg !147",
+    "type": "CastInst"
+  },
+  "7": {
+    "instr": "  %arrayidx2 = getelementptr inbounds nuw i64, ptr %s_inc, i32 %idxprom, !dbg !147",
+    "type": "GetElementPtrInst"
+  },
+  "8": {
+    "instr": "  %1 = load i64, ptr %arrayidx2, align 8, !dbg !148",
+    "type": "LoadInst"
+  },
+  "9": {
+    "instr": "  %xor = xor i64 %1, %shl, !dbg !148",
+    "type": "BinOp"
+  },
+  "10": {
+    "instr": "  store i64 %xor, ptr %arrayidx2, align 8, !dbg !148",
+    "type": "StoreInst"
+  },
+  "11": {
+    "instr": "  %sub = shl i32 %r, 3, !dbg !149",
+    "type": "BinOp"
+  },
+  "12": {
+    "instr": "  %and3 = add i32 %sub, 56, !dbg !149",
+    "type": "BinOp"
+  },
+  "13": {
+    "instr": "  %mul4 = and i32 %and3, 56, !dbg !149",
+    "type": "BinOp"
+  },
+  "14": {
+    "instr": "  %sh_prom = zext nneg i32 %mul4 to i64, !dbg !150",
+    "type": "CastInst"
+  },
+  "15": {
+    "instr": "  %shl5 = shl nuw i64 128, %sh_prom, !dbg !150",
+    "type": "BinOp"
+  },
+  "16": {
+    "instr": "  %sub6 = add i32 %r, -1, !dbg !151",
+    "type": "BinOp"
+  },
+  "17": {
+    "instr": "  %shr7 = lshr i32 %sub6, 3, !dbg !152",
+    "type": "BinOp"
+  },
+  "18": {
+    "instr": "  %arrayidx8 = getelementptr inbounds nuw i64, ptr %s_inc, i32 %shr7, !dbg !153",
+    "type": "GetElementPtrInst"
+  },
+  "19": {
+    "instr": "  %2 = load i64, ptr %arrayidx8, align 8, !dbg !154",
+    "type": "LoadInst"
+  },
+  "20": {
+    "instr": "  %xor9 = xor i64 %2, %shl5, !dbg !154",
+    "type": "BinOp"
+  },
+  "21": {
+    "instr": "  store i64 %xor9, ptr %arrayidx8, align 8, !dbg !154",
+    "type": "StoreInst"
+  },
+  "22": {
+    "instr": "  %arrayidx10 = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !155",
+    "type": "GetElementPtrInst"
+  },
+  "23": {
+    "instr": "  store i64 0, ptr %arrayidx10, align 8, !dbg !156",
+    "type": "StoreInst"
+  }
+}

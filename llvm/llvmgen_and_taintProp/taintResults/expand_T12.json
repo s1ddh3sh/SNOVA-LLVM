@@ -1,0 +1,75 @@
+{
+  "0": {
+    "instr": "  %T12coef = alloca [540 x i8], align 1",
+    "type": "AllocaInst"
+  },
+  "1": {
+    "instr": "  %sk_data = alloca [32 x i8], align 1",
+    "type": "AllocaInst"
+  },
+  "3": {
+    "instr": "  call void @shake256_init(ptr noundef nonnull %state) #3, !dbg !162",
+    "type": "CallInst",
+    "callee": "shake256_init"
+  },
+  "4": {
+    "instr": "  call void @shake_absorb(ptr noundef nonnull %state, ptr noundef %seed, i32 noundef 32) #3, !dbg !163",
+    "type": "CallInst",
+    "callee": "shake_absorb"
+  },
+  "5": {
+    "instr": "  call void @shake_finalize(ptr noundef nonnull %state) #3, !dbg !164",
+    "type": "CallInst",
+    "callee": "shake_finalize"
+  },
+  "14": {
+    "instr": "  call void @shake_squeeze(ptr noundef nonnull %sk_data, i32 noundef 32, ptr noundef nonnull %state) #3, !dbg !174",
+    "type": "CallInst",
+    "callee": "shake_squeeze"
+  },
+  "17": {
+    "instr": "  %arrayidx = getelementptr inbounds nuw [32 x i8], ptr %sk_data, i32 0, i32 %idx.1, !dbg !177",
+    "type": "GetElementPtrInst"
+  },
+  "18": {
+    "instr": "  %0 = load i8, ptr %arrayidx, align 1, !dbg !177",
+    "type": "LoadInst"
+  },
+  "19": {
+    "instr": "  %1 = and i8 %0, 15, !dbg !178",
+    "type": "BinOp"
+  },
+  "20": {
+    "instr": "  %arrayidx3 = getelementptr inbounds nuw [540 x i8], ptr %T12coef, i32 0, i32 %t_idx.0, !dbg !179",
+    "type": "GetElementPtrInst"
+  },
+  "21": {
+    "instr": "  store i8 %1, ptr %arrayidx3, align 1, !dbg !180",
+    "type": "StoreInst"
+  },
+  "23": {
+    "instr": "  %2 = lshr i8 %0, 4, !dbg !182",
+    "type": "BinOp"
+  },
+  "24": {
+    "instr": "  %arrayidx7 = getelementptr inbounds nuw [540 x i8], ptr %T12coef, i32 0, i32 %inc, !dbg !183",
+    "type": "GetElementPtrInst"
+  },
+  "25": {
+    "instr": "  store i8 %2, ptr %arrayidx7, align 1, !dbg !184",
+    "type": "StoreInst"
+  },
+  "33": {
+    "instr": "  %arrayidx12 = getelementptr inbounds nuw i8, ptr %T12, i32 %mul, !dbg !197",
+    "type": "GetElementPtrInst"
+  },
+  "35": {
+    "instr": "  %arrayidx14 = getelementptr inbounds nuw [540 x i8], ptr %T12coef, i32 0, i32 %mul13, !dbg !199",
+    "type": "GetElementPtrInst"
+  },
+  "36": {
+    "instr": "  call fastcc void @gen_a_FqS_sec(ptr noundef %arrayidx12, ptr noundef nonnull %arrayidx14) #3, !dbg !200",
+    "type": "CallInst",
+    "callee": "gen_a_FqS_sec"
+  }
+}

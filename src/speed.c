@@ -187,8 +187,17 @@ int main(void) {
 		uint8_t bseed[SEED_LENGTH_PUBLIC + SEED_LENGTH_PRIVATE];
 		uint8_t salt[BYTES_SALT];
 		uint8_t digest[BYTES_DIGEST] = {0};
+#if SNOVA_OPT == 0
+		uint8_t skx_d[BYTES_EXPANDED_SK] = {0};
+		uint8_t pkx[BYTES_EXPANDED_PK] = {0};
+		uint8_t *pskx = skx_d;
+		uint8_t *ppkx = pkx;
+#else
 		expanded_SK skx_d = {0};
 		expanded_PK pkx = {0};
+		expanded_SK *pskx = &skx_d;
+		expanded_PK *ppkx = &pkx;
+#endif
 
 		randombytes(bseed, SEED_LENGTH_PUBLIC + SEED_LENGTH_PRIVATE);
 		randombytes(salt, BYTES_SALT);
@@ -202,19 +211,19 @@ int main(void) {
 		t0[i * 2 + 1] = get_cycles();
 
 		t1[i * 2] = get_cycles();
-		r += SNOVA_NAMESPACE(sk_expand)(&skx_d, sk);
+		r += SNOVA_NAMESPACE(sk_expand)(pskx, sk);
 		t1[i * 2 + 1] = get_cycles();
 
 		t2[i * 2] = get_cycles();
-		r += SNOVA_NAMESPACE(sign)(&skx_d, sm, digest, BYTES_DIGEST, salt);
+		r += SNOVA_NAMESPACE(sign)(pskx, sm, digest, BYTES_DIGEST, salt);
 		t2[i * 2 + 1] = get_cycles();
 
 		t3[i * 2] = get_cycles();
-		r += SNOVA_NAMESPACE(pk_expand)(&pkx, pk);
+		r += SNOVA_NAMESPACE(pk_expand)(ppkx, pk);
 		t3[i * 2 + 1] = get_cycles();
 
 		t4[i * 2] = get_cycles();
-		r += SNOVA_NAMESPACE(verify)(&pkx, sm, digest, BYTES_DIGEST);
+		r += SNOVA_NAMESPACE(verify)(ppkx, sm, digest, BYTES_DIGEST);
 		t4[i * 2 + 1] = get_cycles();
 #endif
 

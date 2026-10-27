@@ -1,0 +1,279 @@
+{
+  "1": {
+    "instr": "  %m.addr.0 = phi ptr [ %m, %entry ], [ %add.ptr, %for.end ]",
+    "type": "PHINode"
+  },
+  "2": {
+    "instr": "  %mlen.addr.0 = phi i32 [ %mlen, %entry ], [ %sub20, %for.end ]",
+    "type": "PHINode"
+  },
+  "3": {
+    "instr": "  %conv = zext i32 %mlen.addr.0 to i64, !dbg !147",
+    "type": "CastInst"
+  },
+  "4": {
+    "instr": "  %arrayidx = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !148",
+    "type": "GetElementPtrInst"
+  },
+  "5": {
+    "instr": "  %0 = load i64, ptr %arrayidx, align 8, !dbg !148",
+    "type": "LoadInst"
+  },
+  "6": {
+    "instr": "  %add = add i64 %0, %conv, !dbg !149",
+    "type": "BinOp"
+  },
+  "7": {
+    "instr": "  %conv1 = zext i32 %r to i64, !dbg !150",
+    "type": "CastInst"
+  },
+  "8": {
+    "instr": "  %cmp.not = icmp ult i64 %add, %conv1, !dbg !151",
+    "type": "CmpInst"
+  },
+  "11": {
+    "instr": "  %mlen.addr.0.lcssa1 = phi i32 [ %mlen.addr.0, %while.cond ]",
+    "type": "PHINode"
+  },
+  "12": {
+    "instr": "  %m.addr.0.lcssa = phi ptr [ %m.addr.0, %while.cond ]",
+    "type": "PHINode"
+  },
+  "13": {
+    "instr": "  %mlen.addr.0.lcssa = phi i32 [ %mlen.addr.0, %while.cond ]",
+    "type": "PHINode"
+  },
+  "16": {
+    "instr": "  %arrayidx3 = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !159",
+    "type": "GetElementPtrInst"
+  },
+  "17": {
+    "instr": "  %1 = load i64, ptr %arrayidx3, align 8, !dbg !159",
+    "type": "LoadInst"
+  },
+  "18": {
+    "instr": "  %conv4 = trunc i64 %1 to i32, !dbg !161",
+    "type": "CastInst"
+  },
+  "19": {
+    "instr": "  %sub = sub i32 %r, %conv4, !dbg !162",
+    "type": "BinOp"
+  },
+  "20": {
+    "instr": "  %cmp5 = icmp ult i32 %i.0, %sub, !dbg !163",
+    "type": "CmpInst"
+  },
+  "22": {
+    "instr": "  %arrayidx7 = getelementptr inbounds nuw i8, ptr %m.addr.0, i32 %i.0, !dbg !164",
+    "type": "GetElementPtrInst"
+  },
+  "23": {
+    "instr": "  %2 = load i8, ptr %arrayidx7, align 1, !dbg !164",
+    "type": "LoadInst"
+  },
+  "24": {
+    "instr": "  %conv8 = zext i8 %2 to i64, !dbg !166",
+    "type": "CastInst"
+  },
+  "25": {
+    "instr": "  %arrayidx9 = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !167",
+    "type": "GetElementPtrInst"
+  },
+  "26": {
+    "instr": "  %3 = load i64, ptr %arrayidx9, align 8, !dbg !167",
+    "type": "LoadInst"
+  },
+  "28": {
+    "instr": "  %add11 = add i64 %3, %conv10, !dbg !169",
+    "type": "BinOp"
+  },
+  "29": {
+    "instr": "  %and = shl i64 %add11, 3, !dbg !170",
+    "type": "BinOp"
+  },
+  "30": {
+    "instr": "  %mul = and i64 %and, 56, !dbg !170",
+    "type": "BinOp"
+  },
+  "31": {
+    "instr": "  %shl = shl nuw i64 %conv8, %mul, !dbg !171",
+    "type": "BinOp"
+  },
+  "32": {
+    "instr": "  %arrayidx12 = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !172",
+    "type": "GetElementPtrInst"
+  },
+  "33": {
+    "instr": "  %4 = load i64, ptr %arrayidx12, align 8, !dbg !172",
+    "type": "LoadInst"
+  },
+  "35": {
+    "instr": "  %add14 = add i64 %4, %conv13, !dbg !174",
+    "type": "BinOp"
+  },
+  "36": {
+    "instr": "  %shr = lshr i64 %add14, 3, !dbg !175",
+    "type": "BinOp"
+  },
+  "37": {
+    "instr": "  %idxprom = trunc i64 %shr to i32, !dbg !176",
+    "type": "CastInst"
+  },
+  "38": {
+    "instr": "  %arrayidx15 = getelementptr inbounds nuw i64, ptr %s_inc, i32 %idxprom, !dbg !176",
+    "type": "GetElementPtrInst"
+  },
+  "39": {
+    "instr": "  %5 = load i64, ptr %arrayidx15, align 8, !dbg !177",
+    "type": "LoadInst"
+  },
+  "40": {
+    "instr": "  %xor = xor i64 %5, %shl, !dbg !177",
+    "type": "BinOp"
+  },
+  "41": {
+    "instr": "  store i64 %xor, ptr %arrayidx15, align 8, !dbg !177",
+    "type": "StoreInst"
+  },
+  "44": {
+    "instr": "  %arrayidx17 = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !183",
+    "type": "GetElementPtrInst"
+  },
+  "45": {
+    "instr": "  %6 = load i64, ptr %arrayidx17, align 8, !dbg !183",
+    "type": "LoadInst"
+  },
+  "46": {
+    "instr": "  %7 = trunc i64 %6 to i32, !dbg !184",
+    "type": "CastInst"
+  },
+  "47": {
+    "instr": "  %conv19.neg = sub i32 %7, %r, !dbg !184",
+    "type": "BinOp"
+  },
+  "48": {
+    "instr": "  %sub20 = add i32 %conv19.neg, %mlen.addr.0, !dbg !185",
+    "type": "BinOp"
+  },
+  "49": {
+    "instr": "  %8 = trunc i64 %6 to i32, !dbg !186",
+    "type": "CastInst"
+  },
+  "50": {
+    "instr": "  %idx.ext = sub i32 %r, %8, !dbg !186",
+    "type": "BinOp"
+  },
+  "51": {
+    "instr": "  %add.ptr = getelementptr inbounds nuw i8, ptr %m.addr.0, i32 %idx.ext, !dbg !186",
+    "type": "GetElementPtrInst"
+  },
+  "52": {
+    "instr": "  %arrayidx24 = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !187",
+    "type": "GetElementPtrInst"
+  },
+  "53": {
+    "instr": "  store i64 0, ptr %arrayidx24, align 8, !dbg !188",
+    "type": "StoreInst"
+  },
+  "54": {
+    "instr": "  call fastcc void @KeccakF1600_StatePermute(ptr noundef nonnull %s_inc) #3, !dbg !189",
+    "type": "CallInst",
+    "callee": "KeccakF1600_StatePermute"
+  },
+  "57": {
+    "instr": "  %exitcond = icmp ne i32 %i.1, %mlen.addr.0.lcssa1, !dbg !193",
+    "type": "CmpInst"
+  },
+  "59": {
+    "instr": "  %arrayidx29 = getelementptr inbounds nuw i8, ptr %m.addr.0.lcssa, i32 %i.1, !dbg !195",
+    "type": "GetElementPtrInst"
+  },
+  "60": {
+    "instr": "  %9 = load i8, ptr %arrayidx29, align 1, !dbg !195",
+    "type": "LoadInst"
+  },
+  "61": {
+    "instr": "  %conv30 = zext i8 %9 to i64, !dbg !197",
+    "type": "CastInst"
+  },
+  "62": {
+    "instr": "  %arrayidx31 = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !198",
+    "type": "GetElementPtrInst"
+  },
+  "63": {
+    "instr": "  %10 = load i64, ptr %arrayidx31, align 8, !dbg !198",
+    "type": "LoadInst"
+  },
+  "65": {
+    "instr": "  %add33 = add i64 %10, %conv32, !dbg !200",
+    "type": "BinOp"
+  },
+  "66": {
+    "instr": "  %and34 = shl i64 %add33, 3, !dbg !201",
+    "type": "BinOp"
+  },
+  "67": {
+    "instr": "  %mul35 = and i64 %and34, 56, !dbg !201",
+    "type": "BinOp"
+  },
+  "68": {
+    "instr": "  %shl36 = shl nuw i64 %conv30, %mul35, !dbg !202",
+    "type": "BinOp"
+  },
+  "69": {
+    "instr": "  %arrayidx37 = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !203",
+    "type": "GetElementPtrInst"
+  },
+  "70": {
+    "instr": "  %11 = load i64, ptr %arrayidx37, align 8, !dbg !203",
+    "type": "LoadInst"
+  },
+  "72": {
+    "instr": "  %add39 = add i64 %11, %conv38, !dbg !205",
+    "type": "BinOp"
+  },
+  "73": {
+    "instr": "  %shr40 = lshr i64 %add39, 3, !dbg !206",
+    "type": "BinOp"
+  },
+  "74": {
+    "instr": "  %idxprom41 = trunc i64 %shr40 to i32, !dbg !207",
+    "type": "CastInst"
+  },
+  "75": {
+    "instr": "  %arrayidx42 = getelementptr inbounds nuw i64, ptr %s_inc, i32 %idxprom41, !dbg !207",
+    "type": "GetElementPtrInst"
+  },
+  "76": {
+    "instr": "  %12 = load i64, ptr %arrayidx42, align 8, !dbg !208",
+    "type": "LoadInst"
+  },
+  "77": {
+    "instr": "  %xor43 = xor i64 %12, %shl36, !dbg !208",
+    "type": "BinOp"
+  },
+  "78": {
+    "instr": "  store i64 %xor43, ptr %arrayidx42, align 8, !dbg !208",
+    "type": "StoreInst"
+  },
+  "81": {
+    "instr": "  %conv47 = zext i32 %mlen.addr.0.lcssa to i64, !dbg !213",
+    "type": "CastInst"
+  },
+  "82": {
+    "instr": "  %arrayidx48 = getelementptr inbounds nuw i8, ptr %s_inc, i32 200, !dbg !214",
+    "type": "GetElementPtrInst"
+  },
+  "83": {
+    "instr": "  %13 = load i64, ptr %arrayidx48, align 8, !dbg !215",
+    "type": "LoadInst"
+  },
+  "84": {
+    "instr": "  %add49 = add i64 %13, %conv47, !dbg !215",
+    "type": "BinOp"
+  },
+  "85": {
+    "instr": "  store i64 %add49, ptr %arrayidx48, align 8, !dbg !215",
+    "type": "StoreInst"
+  }
+}

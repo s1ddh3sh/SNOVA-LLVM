@@ -178,3 +178,6 @@ typings/
 /SNOVA_*/ref/
 /SNOVA_*/opt/
 /SNOVA_*/avx2/
+
+build/
+test_snova/

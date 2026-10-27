@@ -1,0 +1,10 @@
+{
+  "0": {
+    "instr": "  %idxprom = zext i8 %a to i32, !dbg !141",
+    "type": "CastInst"
+  },
+  "2": {
+    "instr": "  %0 = load i8, ptr %arrayidx, align 1, !dbg !141",
+    "type": "LoadInst"
+  }
+}

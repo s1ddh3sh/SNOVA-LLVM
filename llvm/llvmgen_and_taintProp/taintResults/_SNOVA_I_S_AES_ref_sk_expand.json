@@ -1,0 +1,7 @@
+{
+  "0": {
+    "instr": "  %call = call ptr @memcpy(ptr noundef %skx, ptr noundef %sk, i32 noundef 96) #3, !dbg !143",
+    "type": "CallInst",
+    "callee": "memcpy"
+  }
+}

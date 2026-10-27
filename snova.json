@@ -1,0 +1,120 @@
+{
+    "_SNOVA_I_S_AES_ref_genkeys": {
+        "output": [
+            "pk",
+            "sk"
+        ],
+        "secret-buf": "seed"
+    },
+    "_SNOVA_I_S_AES_ref_sign": {
+        "fixed-scalars": "len_digest",
+        "output": "sig",
+        "secret-buf": "skx"
+    },
+    "_SNOVA_I_S_AES_ref_sk_expand": {
+        "output": "skx",
+        "secret-buf": "sk"
+    },
+    "compress_gf": {
+        "fixed-scalars": "num",
+        "output": "byte_array",
+        "secret-buf": "gf_array"
+    },
+    "crypto_sign": {
+        "fixed-scalars": "mlen",
+        "output": "sm",
+        "secret-buf": "sk"
+    },
+    "crypto_sign_keypair": {
+        "output": [
+            "pk",
+            "sk"
+        ],
+        "secret-buf": "sk"
+    },
+    "expand_T12": {
+        "output": "T12",
+        "secret-buf": "seed"
+    },
+    "gen_a_FqS_sec": {
+        "output": "Qm",
+        "secret-buf": "q"
+    },
+    "gf_inv": {
+        "output": "ret",
+        "secret-buf": "a"
+    },
+    "gf_mat_mul_add": {
+        "inout": "a",
+        "output": "a",
+        "secret-buf": "c"
+    },
+    "gf_mat_mul_add_lr": {
+        "eph_secret": "c",
+        "fixed-scalars": "ad,bd,cd",
+        "inout": "a",
+        "output": "a",
+        "secret-buf": "b"
+    },
+    "gf_mult": {
+        "output": "ret",
+        "secret-buf": "a"
+    },
+    "gf_set_add": {
+        "inout": "a",
+        "output": "a",
+        "secret-buf": "b"
+    },
+    "gf_sub": {
+        "output": "ret",
+        "secret-buf": "a"
+    },
+    "keccak_inc_absorb": {
+        "fixed-scalars": "r,mlen",
+        "inout": "s_inc",
+        "output": "s_inc",
+        "secret-buf": "m"
+    },
+    "keccak_inc_finalize": {
+        "fixed-scalars": "r,p",
+        "inout": "s_inc",
+        "output": "s_inc",
+        "secret-buf": "s_inc"
+    },
+    "keccak_inc_squeeze": {
+        "fixed-scalars": "outlen,r",
+        "output": "h",
+        "secret-buf": "s_inc"
+    },
+    "randombytes": {
+        "fixed-scalars": "xlen",
+        "output": "x",
+        "secret-buf": "x"
+    },
+    "shake256": {
+        "fixed-scalars": "outlen,inlen",
+        "output": "out",
+        "secret-buf": "in"
+    },
+    "shake256_init": {
+        "inout": "instance",
+        "output": "instance",
+        "secret-buf": "instance"
+    },
+    "shake_absorb": {
+        "fixed-scalars": "inlen",
+        "inout": "instance",
+        "output": "instance",
+        "secret-buf": "in"
+    },
+    "shake_finalize": {
+        "inout": "instance",
+        "output": "instance",
+        "secret-buf": "instance"
+    },
+    "shake_squeeze": {
+        "fixed-scalars": "outlen",
+        "output": "out",
+        "secret-buf": "instance"
+    }
+}

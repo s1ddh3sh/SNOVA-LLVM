@@ -1,0 +1,19 @@
+{
+  "0": {
+    "instr": "  %arrayidx = getelementptr inbounds nuw i8, ptr %instance, i32 208, !dbg !152",
+    "type": "GetElementPtrInst"
+  },
+  "1": {
+    "instr": "  %0 = load i64, ptr %arrayidx, align 8, !dbg !152",
+    "type": "LoadInst"
+  },
+  "2": {
+    "instr": "  %conv = trunc i64 %0 to i32, !dbg !152",
+    "type": "CastInst"
+  },
+  "3": {
+    "instr": "  call fastcc void @keccak_inc_squeeze(ptr noundef %out, i32 noundef %outlen, ptr noundef %instance, i32 noundef %conv) #3, !dbg !153",
+    "type": "CallInst",
+    "callee": "keccak_inc_squeeze"
+  }
+}

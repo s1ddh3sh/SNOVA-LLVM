@@ -1,0 +1,21 @@
+{
+  "0": {
+    "instr": "  %seed = alloca [48 x i8], align 1",
+    "type": "AllocaInst"
+  },
+  "1": {
+    "instr": "  %call = call i32 @randombytes(ptr noundef nonnull %seed, i64 noundef 48) #3, !dbg !148",
+    "type": "CallInst",
+    "callee": "randombytes"
+  },
+  "2": {
+    "instr": "  %call2 = call i32 @_SNOVA_I_S_AES_ref_genkeys(ptr noundef %pk, ptr noundef %sk, ptr noundef nonnull %seed) #3, !dbg !149",
+    "type": "CallInst",
+    "callee": "_SNOVA_I_S_AES_ref_genkeys"
+  },
+  "3": {
+    "instr": "  call void @snova_secure_clear(ptr noundef nonnull %seed, i32 noundef 48) #3, !dbg !151",
+    "type": "CallInst",
+    "callee": "snova_secure_clear"
+  }
+}

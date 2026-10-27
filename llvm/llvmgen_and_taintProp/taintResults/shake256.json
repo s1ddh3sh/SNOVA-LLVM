@@ -1,0 +1,7 @@
+{
+  "4": {
+    "instr": "  call void @shake_squeeze(ptr noundef %out, i32 noundef %outlen, ptr noundef nonnull %instance) #3, !dbg !159",
+    "type": "CallInst",
+    "callee": "shake_squeeze"
+  }
+}

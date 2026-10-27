@@ -1,0 +1,87 @@
+{
+  "0": {
+    "instr": "  %T12 = alloca [2160 x i8], align 1",
+    "type": "AllocaInst"
+  },
+  "3": {
+    "instr": "  %F12 = alloca [10800 x i8], align 1",
+    "type": "AllocaInst"
+  },
+  "9": {
+    "instr": "  %add.ptr = getelementptr inbounds nuw i8, ptr %seed, i32 16, !dbg !159",
+    "type": "GetElementPtrInst"
+  },
+  "10": {
+    "instr": "  call fastcc void @expand_T12(ptr noundef nonnull %T12, ptr noundef nonnull %add.ptr) #3, !dbg !160",
+    "type": "CallInst",
+    "callee": "expand_T12"
+  },
+  "13": {
+    "instr": "  call void @snova_memset(ptr %F12, i8 0, i32 10800), !dbg !176",
+    "type": "CallInst",
+    "callee": "snova_memset"
+  },
+  "36": {
+    "instr": "  %arrayidx = getelementptr inbounds nuw [10800 x i8], ptr %F12, i32 0, i32 %mul18, !dbg !217",
+    "type": "GetElementPtrInst"
+  },
+  "46": {
+    "instr": "  %arrayidx28 = getelementptr inbounds nuw [2160 x i8], ptr %T12, i32 0, i32 %mul27, !dbg !227",
+    "type": "GetElementPtrInst"
+  },
+  "47": {
+    "instr": "  call fastcc void @gf_mat_mul_add(ptr noundef nonnull %arrayidx, ptr noundef nonnull %arrayidx24, ptr noundef nonnull %arrayidx28) #3, !dbg !228",
+    "type": "CallInst",
+    "callee": "gf_mat_mul_add"
+  },
+  "60": {
+    "instr": "  %arrayidx42 = getelementptr inbounds nuw [10800 x i8], ptr %F12, i32 0, i32 %i138.0, !dbg !253",
+    "type": "GetElementPtrInst"
+  },
+  "63": {
+    "instr": "  call fastcc void @gf_set_add(ptr noundef nonnull %arrayidx42, i8 noundef zeroext %0) #3, !dbg !256",
+    "type": "CallInst",
+    "callee": "gf_set_add"
+  },
+  "92": {
+    "instr": "  %arrayidx72 = getelementptr inbounds nuw [2160 x i8], ptr %T12, i32 0, i32 %mul71, !dbg !303",
+    "type": "GetElementPtrInst"
+  },
+  "98": {
+    "instr": "  %arrayidx78 = getelementptr inbounds nuw [10800 x i8], ptr %F12, i32 0, i32 %mul77, !dbg !309",
+    "type": "GetElementPtrInst"
+  },
+  "99": {
+    "instr": "  call fastcc void @gf_mat_mul_add(ptr noundef nonnull %arrayidx68, ptr noundef nonnull %arrayidx72, ptr noundef nonnull %arrayidx78) #3, !dbg !310",
+    "type": "CallInst",
+    "callee": "gf_mat_mul_add"
+  },
+  "138": {
+    "instr": "  %arrayidx122 = getelementptr inbounds nuw [2160 x i8], ptr %T12, i32 0, i32 %mul121, !dbg !372",
+    "type": "GetElementPtrInst"
+  },
+  "139": {
+    "instr": "  call fastcc void @gf_mat_mul_add(ptr noundef nonnull %arrayidx112, ptr noundef nonnull %arrayidx118, ptr noundef nonnull %arrayidx122) #3, !dbg !373",
+    "type": "CallInst",
+    "callee": "gf_mat_mul_add"
+  },
+  "148": {
+    "instr": "  %call = call ptr @memcpy(ptr noundef %pk, ptr noundef %seed, i32 noundef 16) #4, !dbg !390",
+    "type": "CallInst",
+    "callee": "memcpy"
+  },
+  "151": {
+    "instr": "  %call137 = call ptr @memcpy(ptr noundef %sk, ptr noundef %seed, i32 noundef 48) #4, !dbg !393",
+    "type": "CallInst",
+    "callee": "memcpy"
+  },
+  "152": {
+    "instr": "  %add.ptr139 = getelementptr inbounds nuw i8, ptr %sk, i32 48, !dbg !394",
+    "type": "GetElementPtrInst"
+  },
+  "153": {
+    "instr": "  call void @shake256(ptr noundef nonnull %add.ptr139, i32 noundef 48, ptr noundef %pk, i32 noundef 1016) #3, !dbg !395",
+    "type": "CallInst",
+    "callee": "shake256"
+  }
+}

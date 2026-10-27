@@ -127,9 +127,8 @@ extern "C" {
  * a null pointer.
  */
 #define OQS_EXIT_IF_NULLPTR(x, loc)                                                   \
-    do {                                                                              \
+    do {                                                                            \
         if ((x) == (void*)0) {                                                        \
-            fprintf(stderr, "Unexpected NULL returned from %s API. Exiting.\n", loc); \
             exit(EXIT_FAILURE);                                                       \
         }                                                                             \
     } while (0)
@@ -148,7 +147,6 @@ extern "C" {
 #define OQS_OPENSSL_GUARD(x)                                                           \
     do {                                                                               \
         if (1 != (x)) {                                                                \
-            fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n", x); \
             exit(EXIT_FAILURE);                                                        \
         }                                                                              \
     } while (0)

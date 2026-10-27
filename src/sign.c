@@ -48,6 +48,13 @@ int crypto_sign(unsigned char *sm, unsigned long long *smlen, const unsigned cha
 
 #if SNOVA_OPT == 5
 	expanded_SK *pskx = (expanded_SK *)sk;
+#elif SNOVA_OPT == 0
+	uint8_t skx_d[BYTES_EXPANDED_SK];
+	uint8_t *pskx = skx_d;
+	res = SNOVA_NAMESPACE(sk_expand)(pskx, sk);
+	if (res) {
+		return res;
+	}
 #else
 	expanded_SK skx_d;
 	expanded_SK *pskx = &skx_d;
@@ -81,7 +88,11 @@ int crypto_sign(unsigned char *sm, unsigned long long *smlen, const unsigned cha
 		*smlen = mlen + CRYPTO_BYTES;
 	}
 
+#if SNOVA_OPT == 0
+	SNOVA_SECURE_CLEAR(skx_d);
+#else
 	SNOVA_SECURE_CLEARI(skx_d);
+#endif
 #endif
 
 #if defined(VALGRIND)
@@ -101,6 +112,13 @@ int crypto_sign_open(unsigned char *m, unsigned long long *mlen, const unsigned 
 
 #if SNOVA_OPT == 5
 	expanded_PK *ppkx = (expanded_PK *)pk;
+#elif SNOVA_OPT == 0
+	uint8_t pkx[BYTES_EXPANDED_PK];
+	uint8_t *ppkx = pkx;
+	res = SNOVA_NAMESPACE(pk_expand)(ppkx, pk);
+	if (res) {
+		return -1;
+	}
 #else
 	expanded_PK pkx;
 	expanded_PK *ppkx = &pkx;

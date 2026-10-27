@@ -12,10 +12,6 @@
 #include "snova.h"
 #include "symmetric.h"
 
-#define _str(s) #s
-#define str(s) _str(s)
-#define CRYPTO_ALGNAME str(SNOVA_NAME)
-
 typedef uint8_t gf_t;
 
 gf_t gf_multtab[SNOVA_q * SNOVA_q] = {0};
@@ -69,7 +65,7 @@ static inline void gf_mat_mul_add(gf_t* a, const gf_t* b, const gf_t* c) {
 		}
 }
 
-static inline void gf_mat_mul_add16(gf_t* a, const uint16_t *b, const gf_t* c) {
+static inline void gf_mat_mul_add16(gf_t* a, const gf_t* b, const gf_t* c) {
 	for (int i1 = 0; i1 < SNOVA_l; i1++)
 		for (int j1 = 0; j1 < SNOVA_r; j1++) {
 			gf_t sum = 0;
@@ -667,29 +663,6 @@ static void gen_fixed_ABQ(const char *abq_seed) {
 
 	shake256(rng_out, SNOVA_o * SNOVA_alpha * (SNOVA_r2 + SNOVA_lr + 2 * SNOVA_l), (uint8_t *)abq_seed, strlen(abq_seed));
 	convert_bytes_to_GF(fixed_abq, rng_out, SNOVA_o * SNOVA_alpha * (SNOVA_r2 + SNOVA_lr + 2 * SNOVA_l));
-
-#if !ROUND2_T12
-	// Check if q1 and q2 are always non zero
-	gf_t* aptr = fixed_abq;
-	gf_t* q1 = aptr + SNOVA_o * SNOVA_alpha * (SNOVA_r2 + SNOVA_lr);
-	gf_t* q2 = q1 + SNOVA_o * SNOVA_alpha * SNOVA_l;
-
-	for (int i1 = 0 ; i1 < SNOVA_o * SNOVA_alpha; i1++) {
-		uint32_t sum1 = 0;
-		uint32_t sum2 = 0;
-		for (int j1 = 0 ; j1 < SNOVA_l; j1 ++) {
-			sum1 |= q1[i1 * SNOVA_l + j1];
-			sum2 |= q2[i1 * SNOVA_l + j1];
-		}
-		if ((sum1 == 0) || (sum2 == 0)) {
-			static int first = 1;
-			if (first) {
-				printf("Warning: Some q1,q2 are zero for '%s' (%s)\n", CRYPTO_ALGNAME, abq_seed);
-				first = 0;
-			}
-		}
-	}
-#endif
 }
 #endif
 
@@ -795,9 +768,8 @@ int SNOVA_NAMESPACE(genkeys)(uint8_t *pk, uint8_t *sk, const uint8_t *seed) {
 /**
  * Dummy sk_expand.
  */
-int SNOVA_NAMESPACE(sk_expand)(expanded_SK* skx, const uint8_t *sk) {
-	memset(skx, 0, sizeof(expanded_SK));
-	memcpy(skx, sk, BYTES_SK);
+int SNOVA_NAMESPACE(sk_expand)(uint8_t *skx, const uint8_t *sk) {
+	memcpy(skx, sk, BYTES_EXPANDED_SK);
 
 	return 0;
 }
@@ -805,13 +777,13 @@ int SNOVA_NAMESPACE(sk_expand)(expanded_SK* skx, const uint8_t *sk) {
 /**
  * Reference version of Sign. Deterministic using the salt provided
  */
-int SNOVA_NAMESPACE(sign)(const expanded_SK* skx, uint8_t *sig, const uint8_t *digest, const size_t len_digest,
+int SNOVA_NAMESPACE(sign)(const uint8_t *skx, uint8_t *sig, const uint8_t *digest, const size_t len_digest,
                           const uint8_t *salt) {
 	if (first_time) {
 		snova_init();
 	}
 
-	const uint8_t *seed = (uint8_t *)skx;
+	const uint8_t *seed = skx;
 
 	gf_t T12[SNOVA_o * SNOVA_v * SNOVA_l2];
 	expand_T12(T12, seed + SEED_LENGTH_PUBLIC);
@@ -1195,15 +1167,15 @@ int SNOVA_NAMESPACE(sign)(const expanded_SK* skx, uint8_t *sig, const uint8_t *d
 /**
  * PK expansion.
  */
-int SNOVA_NAMESPACE(pk_expand)(expanded_PK* pkx, const uint8_t *pk) {
+int SNOVA_NAMESPACE(pk_expand)(uint8_t *pkx, const uint8_t *pk) {
 	if (first_time) {
 		snova_init();
 	}
 
-	memset(pkx, 0, sizeof(expanded_PK));
-	memcpy(pkx->pk_seed, pk, SEED_LENGTH_PUBLIC);
+	memset(pkx, 0, BYTES_EXPANDED_PK);
+	memcpy(pkx + PKX_PK_SEED, pk, SEED_LENGTH_PUBLIC);
 #if HASH_PK
-	shake256(pkx->pk_hash, BYTES_PK_HASH, pk, BYTES_PK);
+	shake256(pkx + PKX_PK_HASH, BYTES_PK_HASH, pk, BYTES_PK);
 #endif
 
 	/**
@@ -1225,26 +1197,26 @@ int SNOVA_NAMESPACE(pk_expand)(expanded_PK* pkx, const uint8_t *pk) {
 		for (int ni = 0; ni < SNOVA_v; ++ni) {
 			for (int nj = 0; nj < SNOVA_v; ++nj) {
 				for (int idx = 0; idx < SNOVA_l2; idx++)
-					pkx->P[((mi * SNOVA_n + ni) * SNOVA_n + nj) * SNOVA_l2 + idx] =
+					pkx[PKX_P + ((mi * SNOVA_n + ni) * SNOVA_n + nj) * SNOVA_l2 + idx] =
 					    P11[((mi * SNOVA_v + ni) * SNOVA_v + nj) * SNOVA_l2 + idx];
 			}
 
 			for (int nj = SNOVA_v; nj < SNOVA_n; ++nj) {
 				for (int idx = 0; idx < SNOVA_l2; idx++)
-					pkx->P[((mi * SNOVA_n + ni) * SNOVA_n + nj) * SNOVA_l2 + idx] =
+					pkx[PKX_P + ((mi * SNOVA_n + ni) * SNOVA_n + nj) * SNOVA_l2 + idx] =
 					    P12[((mi * SNOVA_v + ni) * SNOVA_o + (nj - SNOVA_v)) * SNOVA_l2 + idx];
 			}
 		}
 		for (int ni = SNOVA_v; ni < SNOVA_n; ++ni) {
 			for (int nj = 0; nj < SNOVA_v; ++nj) {
 				for (int idx = 0; idx < SNOVA_l2; idx++)
-					pkx->P[((mi * SNOVA_n + ni) * SNOVA_n + nj) * SNOVA_l2 + idx] =
+					pkx[PKX_P + ((mi * SNOVA_n + ni) * SNOVA_n + nj) * SNOVA_l2 + idx] =
 					    P21[((mi * SNOVA_o + (ni - SNOVA_v)) * SNOVA_v + nj) * SNOVA_l2 + idx];
 			}
 
 			for (int nj = SNOVA_v; nj < SNOVA_n; ++nj) {
 				for (int idx = 0; idx < SNOVA_l2; idx++)
-					pkx->P[((mi * SNOVA_n + ni) * SNOVA_n + nj) * SNOVA_l2 + idx] =
+					pkx[PKX_P + ((mi * SNOVA_n + ni) * SNOVA_n + nj) * SNOVA_l2 + idx] =
 					    P22[((mi * SNOVA_o + (ni - SNOVA_v)) * SNOVA_o + nj - SNOVA_v) * SNOVA_l2 + idx];
 			}
 		}
@@ -1263,8 +1235,8 @@ int SNOVA_NAMESPACE(pk_expand)(expanded_PK* pkx, const uint8_t *pk) {
 #endif
 
 	for (size_t idx = 0; idx < SNOVA_o * SNOVA_alpha; idx++) {
-		be_invertible_by_add_aS(&(pkx->Am[idx * SNOVA_r2]), &A[idx * SNOVA_r2], SNOVA_r, SNOVA_r);
-		be_invertible_by_add_aS(&(pkx->Bm[idx * SNOVA_lr]), &B[idx * SNOVA_lr], SNOVA_r, SNOVA_l);
+		be_invertible_by_add_aS(&pkx[PKX_AM + idx * SNOVA_r2], &A[idx * SNOVA_r2], SNOVA_r, SNOVA_r);
+		be_invertible_by_add_aS(&pkx[PKX_BM + idx * SNOVA_lr], &B[idx * SNOVA_lr], SNOVA_r, SNOVA_l);
 
 #if ROUND2_T12
 		if (!q1[idx * SNOVA_l + SNOVA_l - 1]) {
@@ -1276,8 +1248,8 @@ int SNOVA_NAMESPACE(pk_expand)(expanded_PK* pkx, const uint8_t *pk) {
 #endif
 	}
 
-	memcpy(pkx->q1, q1, SNOVA_o * SNOVA_alpha * SNOVA_l);
-	memcpy(pkx->q2, q2, SNOVA_o * SNOVA_alpha * SNOVA_l);
+	memcpy(pkx + PKX_Q1, q1, SNOVA_o * SNOVA_alpha * SNOVA_l);
+	memcpy(pkx + PKX_Q2, q2, SNOVA_o * SNOVA_alpha * SNOVA_l);
 
 	return 0;
 }
@@ -1285,7 +1257,7 @@ int SNOVA_NAMESPACE(pk_expand)(expanded_PK* pkx, const uint8_t *pk) {
 /**
  * Reference version of verify.
  */
-int SNOVA_NAMESPACE(verify)(const expanded_PK* pkx, const uint8_t *sig, const uint8_t *digest, const size_t len_digest) {
+int SNOVA_NAMESPACE(verify)(const uint8_t *pkx, const uint8_t *sig, const uint8_t *digest, const size_t len_digest) {
 	if (first_time) {
 		snova_init();
 	}
@@ -1323,7 +1295,7 @@ int SNOVA_NAMESPACE(verify)(const expanded_PK* pkx, const uint8_t *sig, const ui
 			for (int b1 = 0; b1 < SNOVA_l; ++b1)
 				for (int nj = 0; nj < SNOVA_n; ++nj)
 					gf_mat_mul_add16(&sum_t0[((mi * SNOVA_l + b1) * SNOVA_n + ni) * SNOVA_lr],
-					                 &pkx->P[((mi * SNOVA_n + ni) * SNOVA_n + nj) * SNOVA_l2],
+					                 &pkx[PKX_P + ((mi * SNOVA_n + ni) * SNOVA_n + nj) * SNOVA_l2],
 					                 &whipped_sig[(b1 * SNOVA_n + nj) * SNOVA_lr]);
 
 		// Left, transposed whipped_sig
@@ -1358,18 +1330,18 @@ int SNOVA_NAMESPACE(verify)(const expanded_PK* pkx, const uint8_t *sig, const ui
 						for (int j1 = 0; j1 < SNOVA_r; j1++)
 							gf_set_add(&sumb[i1 * SNOVA_r + j1],
 							           gf_mult(sum_t1[(mi_prime * SNOVA_l2 + a1 * SNOVA_l + b1) * SNOVA_r2 + i1 * SNOVA_r + j1],
-							                   pkx->q2[(mi * SNOVA_alpha + alpha) * SNOVA_l + b1]));
+							                   pkx[PKX_Q2 + (mi * SNOVA_alpha + alpha) * SNOVA_l + b1]));
 
 				for (int i1 = 0; i1 < SNOVA_r; i1++)
 					for (int j1 = 0; j1 < SNOVA_r; j1++)
 						gf_set_add(&gf16m_temp1[i1 * SNOVA_r + j1],
-						           gf_mult(sumb[i1 * SNOVA_r + j1], pkx->q1[(mi * SNOVA_alpha + alpha) * SNOVA_l + a1]));
+						           gf_mult(sumb[i1 * SNOVA_r + j1], pkx[PKX_Q1 + (mi * SNOVA_alpha + alpha) * SNOVA_l + a1]));
 			}
 
 			// A and B
-			gf_mat_mul_add_lr(gf16m_temp2, gf16m_temp1, &(pkx->Bm[(mi * SNOVA_alpha + alpha) * SNOVA_lr]), SNOVA_r, SNOVA_r,
+			gf_mat_mul_add_lr(gf16m_temp2, gf16m_temp1, &pkx[PKX_BM + (mi * SNOVA_alpha + alpha) * SNOVA_lr], SNOVA_r, SNOVA_r,
 			                  SNOVA_l);
-			gf_mat_mul_add_lr(&hash_in_GF[mi * SNOVA_lr], &(pkx->Am[(mi * SNOVA_alpha + alpha) * SNOVA_r2]), gf16m_temp2,
+			gf_mat_mul_add_lr(&hash_in_GF[mi * SNOVA_lr], &pkx[PKX_AM + (mi * SNOVA_alpha + alpha) * SNOVA_r2], gf16m_temp2,
 			                  SNOVA_r, SNOVA_r, SNOVA_l);
 		}
 
@@ -1380,9 +1352,9 @@ int SNOVA_NAMESPACE(verify)(const expanded_PK* pkx, const uint8_t *sig, const ui
 	uint8_t signed_gf[GF16_HASH] = {0};
 	const uint8_t *salt = sig + BYTES_SIGNATURE - BYTES_SALT;
 #if HASH_PK
-	hash_combined(signed_bytes, digest, len_digest, pkx->pk_hash, salt);
+	hash_combined(signed_bytes, digest, len_digest, pkx + PKX_PK_HASH, salt);
 #else
-	hash_combined(signed_bytes, digest, len_digest, pkx->pk_seed, salt);
+	hash_combined(signed_bytes, digest, len_digest, pkx + PKX_PK_SEED, salt);
 #endif
 	expand_gf(signed_gf, signed_bytes, GF16_HASH);
 

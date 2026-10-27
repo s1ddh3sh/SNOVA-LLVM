@@ -192,6 +192,32 @@
 
 #define i_prime(mi, alpha) ((alpha + mi) % SNOVA_m1)
 
+#if SNOVA_OPT == 0
+
+/**
+ * The reference implementation keeps the expanded keys in flat byte buffers.
+ *
+ * Expanded SK: the secret key itself, sk = pk_seed || sk_seed || pk_hash.
+ * Expanded PK: P || Am || Bm || q1 || q2 || pk_seed || pk_hash, one GF
+ * element per byte.
+ */
+#define BYTES_EXPANDED_SK BYTES_SK
+
+#define PKX_P 0
+#define PKX_AM (PKX_P + SNOVA_m1 * SNOVA_n * SNOVA_n * SNOVA_l2)
+#define PKX_BM (PKX_AM + SNOVA_o * SNOVA_alpha * SNOVA_r2)
+#define PKX_Q1 (PKX_BM + SNOVA_o * SNOVA_alpha * SNOVA_lr)
+#define PKX_Q2 (PKX_Q1 + SNOVA_o * SNOVA_alpha * SNOVA_l)
+#define PKX_PK_SEED (PKX_Q2 + SNOVA_o * SNOVA_alpha * SNOVA_l)
+#define PKX_PK_HASH (PKX_PK_SEED + SEED_LENGTH_PUBLIC)
+#if HASH_PK
+#define BYTES_EXPANDED_PK (PKX_PK_HASH + BYTES_PK_HASH)
+#else
+#define BYTES_EXPANDED_PK PKX_PK_HASH
+#endif
+
+#else
+
 typedef struct {
 #if SNOVA_OPT == 5
 	uint8_t _data[BYTES_SK];
@@ -258,15 +284,25 @@ typedef struct {
 #endif
 } expanded_PK;
 
+#endif
+
 #define PARAM_JOIN_(n, o, f) _##n##_##o##_##f
 #define PARAM_JOIN(n, o, f) PARAM_JOIN_(n, o, f)
 #define SNOVA_NAMESPACE(f) PARAM_JOIN(SNOVA_NAME, SNOVA_OPT_NAME, f)
 
 int SNOVA_NAMESPACE(genkeys)(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+#if SNOVA_OPT == 0
+int SNOVA_NAMESPACE(sk_expand)(uint8_t *skx, const uint8_t *sk);
+int SNOVA_NAMESPACE(sign)(const uint8_t *skx, uint8_t *sig, const uint8_t *digest, const size_t len_digest,
+                          const uint8_t *salt);
+int SNOVA_NAMESPACE(pk_expand)(uint8_t *pkx, const uint8_t *pk);
+int SNOVA_NAMESPACE(verify)(const uint8_t *pkx, const uint8_t *sig, const uint8_t *digest, const size_t len_digest);
+#else
 int SNOVA_NAMESPACE(sk_expand)(expanded_SK *skx, const uint8_t *sk);
 int SNOVA_NAMESPACE(sign)(const expanded_SK *skx, uint8_t *sig, const uint8_t *digest, const size_t len_digest,
                           const uint8_t *salt);
 int SNOVA_NAMESPACE(pk_expand)(expanded_PK *pkx, const uint8_t *pk);
 int SNOVA_NAMESPACE(verify)(const expanded_PK *pkx, const uint8_t *sig, const uint8_t *digest, const size_t len_digest);
+#endif
 
 #endif
