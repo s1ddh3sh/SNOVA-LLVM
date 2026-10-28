@@ -260,9 +260,21 @@ python3 "${SETUP_DIR}/calibrate_unicorn.py" \
 
 echo ""
 echo "########## [1/3] collect_dist_unicorn.sh (${#FAULTY_ELFS[@]} faulty ELF(s)) ##########"
+# A faulty ELF whose collection fails (most often a fault that loops until
+# collect_dist_unicorn.sh's timeout) gets test_snova/<func>/<stem>/
+# collect_failed.txt instead of sweeps: its partial dist_paired* dirs are
+# removed, the paired-test wrappers copy the note into its result files, and
+# the remaining faulty ELFs still run. A timeout note carries
+# "subprocess.TimeoutExpired" so generic_tests_plot.py plots it as a timeout.
+N_COLLECT_FAILED=0
 for faulty_elf in "${FAULTY_ELFS[@]}"; do
     echo ""
     echo "--- collect_dist (unicorn): ${FUNC_NAME} / $(basename "$faulty_elf") ---"
+    faulty_stem="$(realpath -s --relative-to="$ELF_DIR" "$faulty_elf")"
+    faulty_stem="${faulty_stem%.elf}"
+    fault_out="test_snova/${FUNC_NAME}/${faulty_stem}"
+    rm -f "${fault_out}/collect_failed.txt"
+    collect_failed=0
     for i in "${!SEED_LIST[@]}"; do
         p="${SEED_LIST[$i]}"
         for ((j = 0; j < EPH_DRAWS; j++)); do
@@ -283,10 +295,34 @@ for faulty_elf in "${FAULTY_ELFS[@]}"; do
                 COLLECT_ARGS+=(--field-mod "$FIELD_MOD")
             fi
             echo "    [seed p=${p}, eph draw r=${j}]"
-            "${SCRIPT_DIR}/collect_dist_unicorn.sh" "${COLLECT_ARGS[@]}"
+            collect_log="$(mktemp)"
+            set +e
+            "${SCRIPT_DIR}/collect_dist_unicorn.sh" "${COLLECT_ARGS[@]}" 2>&1 | tee "$collect_log"
+            status=${PIPESTATUS[0]}
+            set -e
+            if [[ "$status" -ne 0 ]]; then
+                mkdir -p "$fault_out"
+                rm -rf "${fault_out}"/dist_paired*
+                {
+                    if [[ "$status" -eq 124 ]]; then
+                        echo "[!] collection TIMED OUT (subprocess.TimeoutExpired) for seed p=${p}, eph draw r=${j}: the faulty ELF did not finish the sweep"
+                    else
+                        echo "[!] collection FAILED (exit ${status}) for seed p=${p}, eph draw r=${j}"
+                    fi
+                    echo "--- last lines of collect_dist_unicorn.sh ---"
+                    tail -n 15 "$collect_log"
+                } > "${fault_out}/collect_failed.txt"
+                rm -f "$collect_log"
+                echo "[!] ${faulty_stem}: collection failed (exit ${status}); skipping this faulty ELF -> ${fault_out}/collect_failed.txt" >&2
+                N_COLLECT_FAILED=$((N_COLLECT_FAILED + 1))
+                collect_failed=1
+                break 2
+            fi
+            rm -f "$collect_log"
         done
     done
 done
+[[ "$N_COLLECT_FAILED" -gt 0 ]] && echo "[!] ${N_COLLECT_FAILED}/${#FAULTY_ELFS[@]} faulty ELF(s) could not be collected (see their collect_failed.txt)"
 
 # ---------------------------------------------------------------------------
 # [2/3] and [3/3] each loop internally over every faulty ELF's dist_paired
@@ -339,11 +375,13 @@ for OUT_BUF_CUR in "${OUT_BUFS[@]}"; do
         INEFF_ARGS+=(--seeds "$SEEDS")
         CORR_ARGS+=(--seeds "$SEEDS")
     fi
-    "${SCRIPT_DIR}/run_ineffective_paired.sh" "${INEFF_ARGS[@]}"
+    "${SCRIPT_DIR}/run_ineffective_paired.sh" "${INEFF_ARGS[@]}" \
+        || echo "[!] run_ineffective_paired.sh exited $? (see above); continuing" >&2
 
     echo ""
     echo "########## [3/3] run_correction_paired.sh ##########"
-    "${SCRIPT_DIR}/run_correction_paired.sh" "${CORR_ARGS[@]}"
+    "${SCRIPT_DIR}/run_correction_paired.sh" "${CORR_ARGS[@]}" \
+        || echo "[!] run_correction_paired.sh exited $? (see above); continuing" >&2
 done
 
 echo ""

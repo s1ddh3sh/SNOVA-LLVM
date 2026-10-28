@@ -1,0 +1,329 @@
+scheme,function,fault,source,test,detected,detail
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_expand_T12_line10,direct_leak_result.txt,direct_leak,no,"secret-buf: output 'sk' equals input 'seed' in all 16 trace(s), and so does the correct output: the function itself outputs it, not the fault"
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line139,direct_leak_result.txt,direct_leak,no,"secret-buf: output 'sk' equals input 'seed' in all 16 trace(s), and so does the correct output: the function itself outputs it, not the fault"
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line47,direct_leak_result.txt,direct_leak,no,"secret-buf: output 'sk' equals input 'seed' in all 16 trace(s), and so does the correct output: the function itself outputs it, not the fault"
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line99,direct_leak_result.txt,direct_leak,no,"secret-buf: output 'sk' equals input 'seed' in all 16 trace(s), and so does the correct output: the function itself outputs it, not the fault"
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_set_add_line63,direct_leak_result.txt,direct_leak,no,"secret-buf: output 'sk' equals input 'seed' in all 16 trace(s), and so does the correct output: the function itself outputs it, not the fault"
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_memcpy_line148,direct_leak_result.txt,direct_leak,no,"secret-buf: output 'sk' equals input 'seed' in all 16 trace(s), and so does the correct output: the function itself outputs it, not the fault"
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_memcpy_line151,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_shake256_line153,direct_leak_result.txt,direct_leak,no,"secret-buf: output 'sk' equals input 'seed' in all 16 trace(s), and so does the correct output: the function itself outputs it, not the fault"
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_snova_memset_line13,direct_leak_result.txt,direct_leak,no,"secret-buf: output 'sk' equals input 'seed' in all 16 trace(s), and so does the correct output: the function itself outputs it, not the fault"
+snova,_SNOVA_I_S_AES_ref_sign,binOpFault/_SNOVA_I_S_AES_ref_sign_line185_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'skx'
+snova,_SNOVA_I_S_AES_ref_sign,binOpFault/_SNOVA_I_S_AES_ref_sign_line185_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'skx'
+snova,_SNOVA_I_S_AES_ref_sign,binOpFault/_SNOVA_I_S_AES_ref_sign_line185_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'skx'
+snova,_SNOVA_I_S_AES_ref_sign,binOpFault/_SNOVA_I_S_AES_ref_sign_line185_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'skx'
+snova,_SNOVA_I_S_AES_ref_sign,binOpFault/_SNOVA_I_S_AES_ref_sign_line189_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'skx'
+snova,_SNOVA_I_S_AES_ref_sign,binOpFault/_SNOVA_I_S_AES_ref_sign_line189_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'skx'
+snova,_SNOVA_I_S_AES_ref_sign,binOpFault/_SNOVA_I_S_AES_ref_sign_line189_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'skx'
+snova,_SNOVA_I_S_AES_ref_sign,binOpFault/_SNOVA_I_S_AES_ref_sign_line189_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'skx'
+snova,_SNOVA_I_S_AES_ref_sign,loadStoreSkip/_SNOVA_I_S_AES_ref_sign_line184_mem,direct_leak_result.txt,direct_leak,timeout,"subprocess.TimeoutExpired: no verdict within 120 s, skipped"
+snova,_SNOVA_I_S_AES_ref_sign,loadStoreSkip/_SNOVA_I_S_AES_ref_sign_line187_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'skx'
+snova,_SNOVA_I_S_AES_ref_sign,loadStoreSkip/_SNOVA_I_S_AES_ref_sign_line191_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'skx'
+snova,_SNOVA_I_S_AES_ref_sk_expand,loopOrFuncSkip/_SNOVA_I_S_AES_ref_sk_expand_fnSkip_memcpy_line0,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'sk'
+snova,compress_gf,binOpFault/compress_gf_line19_opA,direct_leak_result.txt,direct_leak,error,"RunFailed: faulty run for gf_array[-1]=0 (seed=0) raised: TrialError: layout has 2 pointer buffers ['byte_array', 'gf_array'], but DWARF says compress_gf has 1 pointer-typed formal parameters (out of 2 total: [True, False]) — order/count mismatch"
+snova,compress_gf,binOpFault/compress_gf_line19_opB,direct_leak_result.txt,direct_leak,error,"RunFailed: faulty run for gf_array[-1]=0 (seed=0) raised: TrialError: layout has 2 pointer buffers ['byte_array', 'gf_array'], but DWARF says compress_gf has 1 pointer-typed formal parameters (out of 2 total: [True, False]) — order/count mismatch"
+snova,compress_gf,binOpFault/compress_gf_line19_undef,direct_leak_result.txt,direct_leak,error,"RunFailed: faulty run for gf_array[-1]=0 (seed=0) raised: TrialError: layout has 2 pointer buffers ['byte_array', 'gf_array'], but DWARF says compress_gf has 1 pointer-typed formal parameters (out of 2 total: [True, False]) — order/count mismatch"
+snova,compress_gf,binOpFault/compress_gf_line19_zero,direct_leak_result.txt,direct_leak,error,"RunFailed: faulty run for gf_array[-1]=0 (seed=0) raised: TrialError: layout has 2 pointer buffers ['byte_array', 'gf_array'], but DWARF says compress_gf has 1 pointer-typed formal parameters (out of 2 total: [True, False]) — order/count mismatch"
+snova,compress_gf,binOpFault/compress_gf_line21_opA,direct_leak_result.txt,direct_leak,error,"RunFailed: faulty run for gf_array[-1]=0 (seed=0) raised: TrialError: layout has 2 pointer buffers ['byte_array', 'gf_array'], but DWARF says compress_gf has 1 pointer-typed formal parameters (out of 2 total: [True, False]) — order/count mismatch"
+snova,compress_gf,binOpFault/compress_gf_line21_opB,direct_leak_result.txt,direct_leak,error,"RunFailed: faulty run for gf_array[-1]=0 (seed=0) raised: TrialError: layout has 2 pointer buffers ['byte_array', 'gf_array'], but DWARF says compress_gf has 1 pointer-typed formal parameters (out of 2 total: [True, False]) — order/count mismatch"
+snova,compress_gf,binOpFault/compress_gf_line21_undef,direct_leak_result.txt,direct_leak,error,"RunFailed: faulty run for gf_array[-1]=0 (seed=0) raised: TrialError: layout has 2 pointer buffers ['byte_array', 'gf_array'], but DWARF says compress_gf has 1 pointer-typed formal parameters (out of 2 total: [True, False]) — order/count mismatch"
+snova,compress_gf,binOpFault/compress_gf_line21_zero,direct_leak_result.txt,direct_leak,error,"RunFailed: faulty run for gf_array[-1]=0 (seed=0) raised: TrialError: layout has 2 pointer buffers ['byte_array', 'gf_array'], but DWARF says compress_gf has 1 pointer-typed formal parameters (out of 2 total: [True, False]) — order/count mismatch"
+snova,compress_gf,binOpFault/compress_gf_line22_opA,direct_leak_result.txt,direct_leak,error,"RunFailed: faulty run for gf_array[-1]=0 (seed=0) raised: TrialError: layout has 2 pointer buffers ['byte_array', 'gf_array'], but DWARF says compress_gf has 1 pointer-typed formal parameters (out of 2 total: [True, False]) — order/count mismatch"
+snova,compress_gf,binOpFault/compress_gf_line22_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'gf_array'
+snova,compress_gf,binOpFault/compress_gf_line22_undef,direct_leak_result.txt,direct_leak,error,"RunFailed: faulty run for gf_array[-1]=0 (seed=0) raised: TrialError: layout has 2 pointer buffers ['byte_array', 'gf_array'], but DWARF says compress_gf has 1 pointer-typed formal parameters (out of 2 total: [True, False]) — order/count mismatch"
+snova,compress_gf,binOpFault/compress_gf_line22_zero,direct_leak_result.txt,direct_leak,error,"RunFailed: faulty run for gf_array[-1]=0 (seed=0) raised: TrialError: layout has 2 pointer buffers ['byte_array', 'gf_array'], but DWARF says compress_gf has 1 pointer-typed formal parameters (out of 2 total: [True, False]) — order/count mismatch"
+snova,compress_gf,binOpFault/compress_gf_line37_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'gf_array'
+snova,compress_gf,binOpFault/compress_gf_line37_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'gf_array'
+snova,compress_gf,binOpFault/compress_gf_line37_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'gf_array'
+snova,compress_gf,binOpFault/compress_gf_line37_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'gf_array'
+snova,compress_gf,loadStoreSkip/compress_gf_line18_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'gf_array'
+snova,compress_gf,loadStoreSkip/compress_gf_line35_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'gf_array'
+snova,crypto_sign,loopOrFuncSkip/crypto_sign_fnSkip__SNOVA_I_S_AES_ref_sign_line8,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'sk'
+snova,crypto_sign,loopOrFuncSkip/crypto_sign_fnSkip__SNOVA_I_S_AES_ref_sk_expand_line4,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'sk'
+snova,crypto_sign,loopOrFuncSkip/crypto_sign_fnSkip_snova_secure_clear_line18,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'sk'
+snova,crypto_sign_keypair,loopOrFuncSkip/crypto_sign_keypair_fnSkip__SNOVA_I_S_AES_ref_genkeys_line2,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals correct output 'sk'
+snova,crypto_sign_keypair,loopOrFuncSkip/crypto_sign_keypair_fnSkip_randombytes_line1,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals correct output 'sk'
+snova,crypto_sign_keypair,loopOrFuncSkip/crypto_sign_keypair_fnSkip_snova_secure_clear_line3,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals correct output 'sk'
+snova,expand_T12,binOpFault/expand_T12_line19_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,binOpFault/expand_T12_line19_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,binOpFault/expand_T12_line19_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,binOpFault/expand_T12_line19_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,binOpFault/expand_T12_line23_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,binOpFault/expand_T12_line23_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,binOpFault/expand_T12_line23_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,binOpFault/expand_T12_line23_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,loadStoreSkip/expand_T12_line18_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,loadStoreSkip/expand_T12_line21_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,loadStoreSkip/expand_T12_line25_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,loopOrFuncSkip/expand_T12_fnSkip_gen_a_FqS_sec_line36,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,loopOrFuncSkip/expand_T12_fnSkip_shake256_init_line3,direct_leak_result.txt,direct_leak,timeout,"subprocess.TimeoutExpired: no verdict within 120 s, skipped"
+snova,expand_T12,loopOrFuncSkip/expand_T12_fnSkip_shake_absorb_line4,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,loopOrFuncSkip/expand_T12_fnSkip_shake_finalize_line5,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,expand_T12,loopOrFuncSkip/expand_T12_fnSkip_shake_squeeze_line14,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'seed'
+snova,gen_a_FqS_sec,loadStoreSkip/gen_a_FqS_sec_line11_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'q'
+snova,gen_a_FqS_sec,loadStoreSkip/gen_a_FqS_sec_line20_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'q'
+snova,gen_a_FqS_sec,loadStoreSkip/gen_a_FqS_sec_line22_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'q'
+snova,gen_a_FqS_sec,loadStoreSkip/gen_a_FqS_sec_line5_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'q'
+snova,gen_a_FqS_sec,loopOrFuncSkip/gen_a_FqS_sec_fnSkip_gf_mult_line16,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'q'
+snova,gen_a_FqS_sec,loopOrFuncSkip/gen_a_FqS_sec_fnSkip_gf_set_add_line17,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'q'
+snova,gf_inv,loadStoreSkip/gf_inv_line2_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_mat_mul_add,loadStoreSkip/gf_mat_mul_add_line17_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'c'
+snova,gf_mat_mul_add,loadStoreSkip/gf_mat_mul_add_line21_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'c'
+snova,gf_mat_mul_add,loadStoreSkip/gf_mat_mul_add_line29_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'c'
+snova,gf_mat_mul_add,loadStoreSkip/gf_mat_mul_add_line9_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'c'
+snova,gf_mat_mul_add,loopOrFuncSkip/gf_mat_mul_add_fnSkip_gf_mult_line22,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'c'
+snova,gf_mat_mul_add,loopOrFuncSkip/gf_mat_mul_add_fnSkip_gf_set_add_line23,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'c'
+snova,gf_mat_mul_add,loopOrFuncSkip/gf_mat_mul_add_fnSkip_gf_set_add_line30,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'c'
+snova,gf_mat_mul_add_lr,loadStoreSkip/gf_mat_mul_add_lr_line17_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'; eph_secret: no faulty output equals input 'c'
+snova,gf_mat_mul_add_lr,loadStoreSkip/gf_mat_mul_add_lr_line21_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'; eph_secret: no faulty output equals input 'c'
+snova,gf_mat_mul_add_lr,loadStoreSkip/gf_mat_mul_add_lr_line29_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'; eph_secret: no faulty output equals input 'c'
+snova,gf_mat_mul_add_lr,loadStoreSkip/gf_mat_mul_add_lr_line9_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'; eph_secret: no faulty output equals input 'c'
+snova,gf_mat_mul_add_lr,loopOrFuncSkip/gf_mat_mul_add_lr_fnSkip_gf_mult_line22,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'; eph_secret: no faulty output equals input 'c'
+snova,gf_mat_mul_add_lr,loopOrFuncSkip/gf_mat_mul_add_lr_fnSkip_gf_set_add_line23,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'; eph_secret: no faulty output equals input 'c'
+snova,gf_mat_mul_add_lr,loopOrFuncSkip/gf_mat_mul_add_lr_fnSkip_gf_set_add_line30,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'; eph_secret: no faulty output equals input 'c'
+snova,gf_mult,binOpFault/gf_mult_line1_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_mult,binOpFault/gf_mult_line1_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_mult,binOpFault/gf_mult_line1_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_mult,binOpFault/gf_mult_line1_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_mult,binOpFault/gf_mult_line3_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_mult,binOpFault/gf_mult_line3_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_mult,binOpFault/gf_mult_line3_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_mult,binOpFault/gf_mult_line3_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_mult,loadStoreSkip/gf_mult_line5_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_set_add,binOpFault/gf_set_add_line2_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_set_add,binOpFault/gf_set_add_line2_opB,direct_leak_result.txt,direct_leak,yes,secret-buf: output 'a' equals input 'b' in all 16 trace(s) (the correct output differs from it in 16)
+snova,gf_set_add,binOpFault/gf_set_add_line2_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_set_add,binOpFault/gf_set_add_line2_zero,direct_leak_result.txt,direct_leak,yes,secret-buf: output 'a' equals input 'b' in all 16 trace(s) (the correct output differs from it in 16)
+snova,gf_set_add,binOpFault/gf_set_add_line4_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_set_add,binOpFault/gf_set_add_line4_opB,direct_leak_result.txt,direct_leak,yes,secret-buf: output 'a' equals input 'b' in all 16 trace(s) (the correct output differs from it in 16)
+snova,gf_set_add,binOpFault/gf_set_add_line4_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_set_add,binOpFault/gf_set_add_line4_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_set_add,loadStoreSkip/gf_set_add_line0_mem,direct_leak_result.txt,direct_leak,yes,secret-buf: output 'a' equals input 'b' in all 16 trace(s) (the correct output differs from it in 16)
+snova,gf_set_add,loadStoreSkip/gf_set_add_line6_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_set_add,loadStoreSkip/gf_set_add_line7_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_sub,binOpFault/gf_sub_line1_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_sub,binOpFault/gf_sub_line1_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_sub,binOpFault/gf_sub_line1_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_sub,binOpFault/gf_sub_line1_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_sub,binOpFault/gf_sub_line3_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_sub,binOpFault/gf_sub_line3_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_sub,binOpFault/gf_sub_line3_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_sub,binOpFault/gf_sub_line3_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,gf_sub,loadStoreSkip/gf_sub_line5_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'a'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line19_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line19_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line19_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line19_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line28_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line28_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line28_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line28_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line29_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line29_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line29_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line29_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line30_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line30_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line30_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line30_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line31_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line31_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line31_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line31_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line35_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line35_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line35_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line35_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line36_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line36_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line36_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line36_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line40_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line40_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line40_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line40_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line47_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line47_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line47_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line47_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line48_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line48_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line48_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line48_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line50_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line50_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line50_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line50_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line65_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line65_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line65_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line65_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line66_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line66_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line66_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line66_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line67_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line67_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line67_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line67_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line68_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line68_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line68_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line68_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line6_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line6_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line6_undef,direct_leak_result.txt,direct_leak,error,RunFailed: faulty run for m[-1]=0 (seed=0) raised: EmulationError: emulation fault: unmapped access to 0x20400000 (size 1) at keccak_inc_absorb+0xcc
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line6_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line72_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line72_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line72_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line72_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line73_opA,direct_leak_result.txt,direct_leak,error,RunFailed: faulty run for m[-1]=0 (seed=0) raised: EmulationError: emulation fault: unmapped access to 0x20406fd0 (size 4) at keccak_inc_absorb+0x64
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line73_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line73_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line73_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line77_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line77_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line77_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line77_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line84_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line84_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line84_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,binOpFault/keccak_inc_absorb_line84_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line17_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line23_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line26_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line33_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line39_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line41_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line45_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line53_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line5_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line60_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line63_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line70_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line76_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line78_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line83_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loadStoreSkip/keccak_inc_absorb_line85_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_absorb,loopOrFuncSkip/keccak_inc_absorb_fnSkip_KeccakF1600_StatePermute_line54,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'm'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line11_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line11_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line11_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line11_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line12_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line12_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line12_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line12_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line13_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line13_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line13_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line13_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line15_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line15_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line15_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line15_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line16_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line16_opB,direct_leak_result.txt,direct_leak,error,RunFailed: faulty run for s_inc[-1]=0 (seed=0) raised: EmulationError: emulation fault: unmapped access to 0x80000264 (size 2) at 0x80000264
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line16_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line16_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line17_opA,direct_leak_result.txt,direct_leak,error,RunFailed: faulty run for s_inc[-1]=0 (seed=0) raised: EmulationError: emulation fault: unmapped access to 0x20400348 (size 4) at keccak_inc_finalize
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line17_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line17_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line17_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line20_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line20_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line20_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line20_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line2_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line2_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line2_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line2_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line3_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line3_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line3_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line3_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line4_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line4_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line4_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line4_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line5_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line5_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line5_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line5_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line9_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line9_opB,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line9_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,binOpFault/keccak_inc_finalize_line9_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,loadStoreSkip/keccak_inc_finalize_line10_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,loadStoreSkip/keccak_inc_finalize_line19_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,loadStoreSkip/keccak_inc_finalize_line1_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,loadStoreSkip/keccak_inc_finalize_line21_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,loadStoreSkip/keccak_inc_finalize_line23_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_finalize,loadStoreSkip/keccak_inc_finalize_line8_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 's_inc_pre'
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line12_opA,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line12_opB,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line12_undef,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line12_zero,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line14_opA,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line14_opB,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line14_undef,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line14_zero,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line15_opA,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line15_opB,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line15_undef,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line15_zero,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line22_opA,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line22_opB,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line22_undef,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line22_zero,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line24_opA,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line24_opB,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line24_undef,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line24_zero,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line25_opA,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line25_opB,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line25_undef,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line25_zero,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line26_opA,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line26_opB,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line26_undef,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line26_zero,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line27_opA,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line27_opB,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line27_undef,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line27_zero,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line39_opA,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line39_opB,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line39_undef,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line39_zero,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line59_opA,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line59_opB,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line59_undef,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line59_zero,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line68_opA,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line68_opB,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line68_undef,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,binOpFault/keccak_inc_squeeze_line68_zero,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,loadStoreSkip/keccak_inc_squeeze_line11_mem,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,loadStoreSkip/keccak_inc_squeeze_line18_mem,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,loadStoreSkip/keccak_inc_squeeze_line21_mem,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,loadStoreSkip/keccak_inc_squeeze_line30_mem,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,loadStoreSkip/keccak_inc_squeeze_line38_mem,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,loadStoreSkip/keccak_inc_squeeze_line40_mem,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,loadStoreSkip/keccak_inc_squeeze_line55_mem,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,loadStoreSkip/keccak_inc_squeeze_line62_mem,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,loadStoreSkip/keccak_inc_squeeze_line6_mem,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,loadStoreSkip/keccak_inc_squeeze_line71_mem,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,keccak_inc_squeeze,loopOrFuncSkip/keccak_inc_squeeze_fnSkip_KeccakF1600_StatePermute_line46,direct_leak_result.txt,direct_leak,error,RuntimeError: no collected trace and no witness/active_lengths.json to collect one (run the scheme's calibrate first)
+snova,randombytes,loopOrFuncSkip/randombytes_fnSkip_memcpy_line29,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals correct output 'x'
+snova,randombytes,loopOrFuncSkip/randombytes_fnSkip_memcpy_line35,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals correct output 'x'
+snova,shake256,loopOrFuncSkip/shake256_fnSkip_shake_squeeze_line4,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'in'
+snova,shake256_init,loadStoreSkip/shake256_init_line2_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'instance_pre'
+snova,shake256_init,loopOrFuncSkip/shake256_init_fnSkip_memset_line0,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'instance_pre'
+snova,shake_absorb,loadStoreSkip/shake_absorb_line1_mem,direct_leak_result.txt,direct_leak,timeout,"subprocess.TimeoutExpired: no verdict within 120 s, skipped"
+snova,shake_absorb,loopOrFuncSkip/shake_absorb_fnSkip_keccak_inc_absorb_line3,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'in'
+snova,shake_finalize,loadStoreSkip/shake_finalize_line1_mem,direct_leak_result.txt,direct_leak,error,RunFailed: faulty run for instance[-1]=0 (seed=0) raised: EmulationError: emulation fault: unmapped access to 0x80000264 (size 2) at 0x80000264
+snova,shake_finalize,loopOrFuncSkip/shake_finalize_fnSkip_keccak_inc_finalize_line3,direct_leak_result.txt,direct_leak,yes,secret-buf: output 'instance' equals input 'instance_pre' in all 16 trace(s) (the correct output differs from it in 16)
+snova,shake_squeeze,loadStoreSkip/shake_squeeze_line1_mem,direct_leak_result.txt,direct_leak,timeout,"subprocess.TimeoutExpired: no verdict within 120 s, skipped"
+snova,shake_squeeze,loopOrFuncSkip/shake_squeeze_fnSkip_keccak_inc_squeeze_line3,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'instance'

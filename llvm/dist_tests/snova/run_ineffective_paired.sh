@@ -343,8 +343,18 @@ for faulty_elf in "${FAULTY_ELFS[@]}"; do
     for d in "${DIST_DIRS[@]}"; do
         ls "${d}"/correct_sv*.json >/dev/null 2>&1 || { echo "[!] no swept secret-value files in $d" >&2; missing=1; }
     done
-    n_sv=$(ls "${DIST_PAIRED_DIR}"/correct_sv*.json 2>/dev/null | wc -l)
+    n_sv=$( (ls "${DIST_PAIRED_DIR}"/correct_sv*.json 2>/dev/null || true) | wc -l)
     [[ "$missing" -eq 1 ]] && n_sv=0
+    failed_note="${OUT_DIR}/${faulty_stem}/collect_failed.txt"
+    if [[ "$n_sv" -eq 0 && -f "$failed_note" ]]; then
+        # run_combined_unicorn.sh could not collect this faulty ELF: its note
+        # becomes the result (generic_tests_plot.py reads a timeout from it).
+        result="${OUT_DIR}/${faulty_stem}${RESULT_SUFFIX}/ineffective_paired_result.txt"
+        mkdir -p "$(dirname "$result")"
+        cp "$failed_note" "$result"
+        echo "[!] ${faulty_stem}: not collected ($(head -n 1 "$failed_note")) -> $result" >&2
+        continue
+    fi
     if [[ "$n_sv" -eq 0 ]]; then
         echo "[!] skipping ${faulty_stem}: no swept secret-value files found in $DIST_PAIRED_DIR" >&2
         echo "    (run collect_dist.sh for this faulty elf first)" >&2

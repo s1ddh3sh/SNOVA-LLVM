@@ -78,6 +78,48 @@ def _parse_array_type(type_text: str):
     return count, rest
 
 
+STRUCT_DEF_RE = re.compile(r'^(%[\w.]+)\s*=\s*type\s*\{(.*)\}\s*$', re.MULTILINE)
+
+
+def _split_top_level(text: str) -> List[str]:
+    """Split a struct body on the commas that are not inside [...] / {...}."""
+    parts, depth, start = [], 0, 0
+    for i, c in enumerate(text):
+        if c in "[{":
+            depth += 1
+        elif c in "]}":
+            depth -= 1
+        elif c == "," and depth == 0:
+            parts.append(text[start:i])
+            start = i + 1
+    parts.append(text[start:])
+    return [p.strip() for p in parts if p.strip()]
+
+
+def type_size_align(ty: str, structs: Dict[str, str]) -> Tuple[int, int]:
+    """(byte size, alignment) of an LLVM type: a primitive, a (nested) array
+    or a named struct (%struct.shake_t = type { [28 x i64] }), laid out with
+    natural alignment as the thumbv7em data layout does."""
+    ty = ty.strip()
+    if ty.startswith("["):
+        count, base = _parse_array_type(ty[1:_find_matching_bracket(ty, 0)])
+        size, align = type_size_align(base, structs)
+        return count * size, align
+    if ty.startswith("{"):
+        body = ty[1:ty.rindex("}")]
+    elif ty in structs:
+        body = structs[ty]
+    else:
+        size = TYPE_SIZES.get(ty, 1)
+        return size, size
+    off, max_align = 0, 1
+    for field in _split_top_level(body):
+        size, align = type_size_align(field, structs)
+        off = (off + align - 1) // align * align + size
+        max_align = max(max_align, align)
+    return (off + max_align - 1) // max_align * max_align, max_align
+
+
 def extract_allocas(ll_text: str) -> Tuple[Dict[str, int], set]:
     """Returns (sizes, scalar_ptr_names):
 
@@ -94,7 +136,11 @@ def extract_allocas(ll_text: str) -> Tuple[Dict[str, int], set]:
       - array:        %buf = alloca [1184 x i8], ..., !llvmbmc.var !N
       - nested array:  %mat = alloca [3 x [256 x i16]], ..., !llvmbmc.var !N
       - scalar:        %siglen = alloca i32, ..., !llvmbmc.var !N
+      - struct:        %instance = alloca %struct.shake_t, ..., !llvmbmc.var !N
+        (a byte buffer of the struct's size, e.g. the 224-byte Keccak state,
+        not a scalar_ptr)
     """
+    structs = {m.group(1): m.group(2) for m in STRUCT_DEF_RE.finditer(ll_text)}
     allocas = {}
     scalar_ptr_names = set()
     for m in ALLOCA_START_RE.finditer(ll_text):
@@ -140,6 +186,9 @@ def extract_allocas(ll_text: str) -> Tuple[Dict[str, int], set]:
             if not type_m:
                 continue
             base_type = type_m.group(1)
+            if base_type in structs:
+                allocas[var_name] = type_size_align(base_type, structs)[0]
+                continue
             allocas[var_name] = TYPE_SIZES.get(base_type, 1)
             scalar_ptr_names.add(var_name)
 
@@ -465,7 +514,50 @@ def derive_layout(ll_text: str, fn_name: str, entry: Dict[str, object]) -> Dict[
             )
         layout[resolved]["also_input"] = True
 
+    apply_init(layout, entry.get("init") or {}, fn_name)
     return layout
+
+
+PIN_KEY_RE = re.compile(r'^u(8|16|32|64)@(\d+)$')
+
+
+def apply_init(layout: Dict[str, dict], init: Dict[str, object], fn_name: str) -> None:
+    """snova.json "init": values the harness cannot know because the caller
+    computes them at run time (the driver's anchors then hold 0).
+
+      "init": {"r": 136, "mlen": 32,
+               "s_inc": {"u64@200": 0, "u64@208": 136}}
+
+    A number sets a scalar parameter's init_value (used as-is when the
+    scalar is listed in "fixed-scalars"). An object pins bytes of a pointer
+    buffer: "u<bits>@<byte offset>": value, written little-endian after the
+    buffer is sampled and after any secret override, in every trial -- e.g.
+    the position and rate words of a Keccak state, which must stay valid.
+    Stored in the layout as "pin": [[offset, width, value], ...]."""
+    for name, val in init.items():
+        key = resolve_name(layout, name)
+        if key not in layout:
+            raise ValueError(f"'init' key '{name}' is not a parameter of @{fn_name}")
+        spec = layout[key]
+        if isinstance(val, dict):
+            if spec.get("type") == "scalar":
+                raise ValueError(f"'init' pins bytes of '{name}', a scalar; give a number")
+            pins = []
+            for field, v in val.items():
+                m = PIN_KEY_RE.match(field)
+                if not m:
+                    raise ValueError(f"'init' pin '{field}' of '{name}' is not u<8|16|32|64>@<offset>")
+                width, off = int(m.group(1)) // 8, int(m.group(2))
+                if off + width > spec["length"]:
+                    raise ValueError(f"'init' pin '{field}' is past the end of "
+                                     f"'{name}' ({spec['length']} bytes)")
+                pins.append([off, width, int(v)])
+            spec["pin"] = sorted(pins)
+        else:
+            if spec.get("type") not in ("scalar", "scalar_ptr"):
+                raise ValueError(f"'init' gives '{name}' a number, but it is a buffer; "
+                                 f"pin its bytes with {{\"u64@<offset>\": value}}")
+            spec["init_value"] = int(val)
 
 
 def resolve_name(layout: Dict[str, dict], name: str) -> str:

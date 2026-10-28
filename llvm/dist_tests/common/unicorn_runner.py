@@ -59,6 +59,11 @@ from .machine import Machine
 # Override with UNICORN_TRIAL_TIMEOUT_S (seconds, 0 disables).
 TRIAL_TIMEOUT_S = float(os.environ.get("UNICORN_TRIAL_TIMEOUT_S", "300"))
 
+# Trials never read the guest's clock, so the emulator's instruction counter
+# (a Python callback per basic block) is off: SNOVA sign runs in 0.5 s
+# instead of 9 s. UNICORN_COUNT_INSNS=1 turns it back on.
+COUNT_INSNS = os.environ.get("UNICORN_COUNT_INSNS", "0") == "1"
+
 
 class TrialTimeout(RuntimeError):
     """The trial did not return from main() within TRIAL_TIMEOUT_S."""
@@ -71,6 +76,22 @@ class TrialError(RuntimeError):
 def _int_to_bytes_le(val, width):
     val &= (1 << (8 * width)) - 1
     return [(val >> (8 * i)) & 0xFF for i in range(width)]
+
+
+def _apply_pins(vals, spec):
+    """Overwrite the layout's "pin" fields ([offset, width, value], from the
+    config's "init") in a sampled buffer, little-endian, extending it with
+    zeros if it was filled shorter than a pin (a calibrated active length).
+    Applied last, so a pin also wins over a secret override."""
+    pins = spec.get("pin")
+    if not pins:
+        return vals
+    vals = list(vals)
+    for off, width, value in pins:
+        if len(vals) < off + width:
+            vals.extend([0] * (off + width - len(vals)))
+        vals[off:off + width] = _int_to_bytes_le(value & ((1 << (8 * width)) - 1), width)
+    return vals
 
 
 def _read_aapcs_word(m, slot):
@@ -166,7 +187,7 @@ def run_trial(
     active_lengths = active_lengths or {}
     fixed_scalars = fixed_scalars or set()
 
-    m = Machine.from_elf(elf_path)
+    m = Machine.from_elf(elf_path, count_insns=COUNT_INSNS)
 
     # -- 1. boot to main()'s TRUE first instruction -------------------
     m.run_until("main")
@@ -232,6 +253,17 @@ def run_trial(
             ) from exc
 
         ptr_slots = [i for i, is_ptr in enumerate(param_is_ptr) if is_ptr]
+        # The witness layout lists the FUT's IR parameters in declaration
+        # order (derive_layout builds it from the define line; "ret" is the
+        # return value, not a parameter). DWARF can list fewer: llc drops the
+        # DW_TAG_formal_parameter of an argument a fault left unused (e.g.
+        # compress_gf's gf_array when the add is zeroed), while the argument
+        # is still passed in its register. Fall back to the layout then.
+        layout_params = [n for n, s in layout.items()
+                         if not (n == "ret" and s.get("role") == "output")]
+        if len(ptr_slots) != len(ptr_names) and len(param_is_ptr) < len(layout_params):
+            param_is_ptr = [layout[n].get("type") != "scalar" for n in layout_params]
+            ptr_slots = [i for i, is_ptr in enumerate(param_is_ptr) if is_ptr]
         if len(ptr_slots) != len(ptr_names):
             raise TrialError(
                 f"layout has {len(ptr_names)} pointer buffers {ptr_names}, but "
@@ -300,6 +332,7 @@ def run_trial(
                     else:
                         vals[override_pos] = override_val & 0xFF
 
+            vals = _apply_pins(vals, spec)
             machine.write(addr, bytes(v & 0xFF for v in vals))
             key = f"{name}_pre" if also_in else name
             written_inputs[key] = vals

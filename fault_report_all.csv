@@ -1,0 +1,160 @@
+scheme,function,fault,source,test,detected,detail
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_expand_T12_line10_pk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_expand_T12_line10_pk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_expand_T12_line10_sk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_expand_T12_line10_sk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line139_pk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line139_pk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line139_sk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line139_sk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line47_pk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line47_pk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line47_sk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line47_sk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line99_pk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line99_pk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line99_sk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_mat_mul_add_line99_sk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_set_add_line63_pk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_set_add_line63_pk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_set_add_line63_sk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_gf_set_add_line63_sk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_memcpy_line148_pk,correction_paired_result.txt,correction,yes,pos 0: 15/16 secret values with y1 = y2 xor alpha
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_memcpy_line148_pk,ineffective_paired_result.txt,ineffective,yes,pos 0: 15/120 pairs disagree
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_memcpy_line148_sk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_memcpy_line148_sk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_memcpy_line151_pk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_memcpy_line151_pk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_memcpy_line151_sk,correction_paired_result.txt,correction,yes,pos 0: 15/16 secret values with y1 = y2 xor alpha
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_memcpy_line151_sk,ineffective_paired_result.txt,ineffective,yes,pos 0: 15/120 pairs disagree
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_shake256_line153_pk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_shake256_line153_pk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_shake256_line153_sk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_shake256_line153_sk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_snova_memset_line13_pk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_snova_memset_line13_pk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_snova_memset_line13_sk,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_genkeys,loopOrFuncSkip/_SNOVA_I_S_AES_ref_genkeys_fnSkip_snova_memset_line13_sk,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,_SNOVA_I_S_AES_ref_sk_expand,loopOrFuncSkip/_SNOVA_I_S_AES_ref_sk_expand_fnSkip_memcpy_line0,correction_paired_result.txt,correction,yes,pos 0: 15/16 secret values with y1 = y2 xor alpha
+snova,_SNOVA_I_S_AES_ref_sk_expand,loopOrFuncSkip/_SNOVA_I_S_AES_ref_sk_expand_fnSkip_memcpy_line0,ineffective_paired_result.txt,ineffective,yes,pos 0: 15/120 pairs disagree
+snova,gen_a_FqS_sec,loadStoreSkip/gen_a_FqS_sec_line11_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gen_a_FqS_sec,loadStoreSkip/gen_a_FqS_sec_line11_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gen_a_FqS_sec,loadStoreSkip/gen_a_FqS_sec_line20_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gen_a_FqS_sec,loadStoreSkip/gen_a_FqS_sec_line20_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gen_a_FqS_sec,loadStoreSkip/gen_a_FqS_sec_line22_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gen_a_FqS_sec,loadStoreSkip/gen_a_FqS_sec_line22_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gen_a_FqS_sec,loadStoreSkip/gen_a_FqS_sec_line5_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gen_a_FqS_sec,loadStoreSkip/gen_a_FqS_sec_line5_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gen_a_FqS_sec,loopOrFuncSkip/gen_a_FqS_sec_fnSkip_gf_mult_line16,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gen_a_FqS_sec,loopOrFuncSkip/gen_a_FqS_sec_fnSkip_gf_mult_line16,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gen_a_FqS_sec,loopOrFuncSkip/gen_a_FqS_sec_fnSkip_gf_set_add_line17,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gen_a_FqS_sec,loopOrFuncSkip/gen_a_FqS_sec_fnSkip_gf_set_add_line17,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_inv,loadStoreSkip/gf_inv_line2_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_inv,loadStoreSkip/gf_inv_line2_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loadStoreSkip/gf_mat_mul_add_line17_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loadStoreSkip/gf_mat_mul_add_line17_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loadStoreSkip/gf_mat_mul_add_line21_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loadStoreSkip/gf_mat_mul_add_line21_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loadStoreSkip/gf_mat_mul_add_line29_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loadStoreSkip/gf_mat_mul_add_line29_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loadStoreSkip/gf_mat_mul_add_line9_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loadStoreSkip/gf_mat_mul_add_line9_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loopOrFuncSkip/gf_mat_mul_add_fnSkip_gf_mult_line22,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loopOrFuncSkip/gf_mat_mul_add_fnSkip_gf_mult_line22,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loopOrFuncSkip/gf_mat_mul_add_fnSkip_gf_set_add_line23,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loopOrFuncSkip/gf_mat_mul_add_fnSkip_gf_set_add_line23,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loopOrFuncSkip/gf_mat_mul_add_fnSkip_gf_set_add_line30,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add,loopOrFuncSkip/gf_mat_mul_add_fnSkip_gf_set_add_line30,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loadStoreSkip/gf_mat_mul_add_lr_line17_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loadStoreSkip/gf_mat_mul_add_lr_line17_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loadStoreSkip/gf_mat_mul_add_lr_line21_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loadStoreSkip/gf_mat_mul_add_lr_line21_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loadStoreSkip/gf_mat_mul_add_lr_line29_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loadStoreSkip/gf_mat_mul_add_lr_line29_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loadStoreSkip/gf_mat_mul_add_lr_line9_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loadStoreSkip/gf_mat_mul_add_lr_line9_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loopOrFuncSkip/gf_mat_mul_add_lr_fnSkip_gf_mult_line22,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loopOrFuncSkip/gf_mat_mul_add_lr_fnSkip_gf_mult_line22,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loopOrFuncSkip/gf_mat_mul_add_lr_fnSkip_gf_set_add_line23,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loopOrFuncSkip/gf_mat_mul_add_lr_fnSkip_gf_set_add_line23,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loopOrFuncSkip/gf_mat_mul_add_lr_fnSkip_gf_set_add_line30,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mat_mul_add_lr,loopOrFuncSkip/gf_mat_mul_add_lr_fnSkip_gf_set_add_line30,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mult,binOpFault/gf_mult_line1_opA,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mult,binOpFault/gf_mult_line1_opA,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mult,binOpFault/gf_mult_line1_opB,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mult,binOpFault/gf_mult_line1_opB,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mult,binOpFault/gf_mult_line1_undef,correction_paired_result.txt,correction,yes,pos 0: 8/16 secret values with y1 = y2 xor alpha
+snova,gf_mult,binOpFault/gf_mult_line1_undef,ineffective_paired_result.txt,ineffective,yes,pos 0: 64/120 pairs disagree
+snova,gf_mult,binOpFault/gf_mult_line1_zero,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mult,binOpFault/gf_mult_line1_zero,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mult,binOpFault/gf_mult_line3_opA,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mult,binOpFault/gf_mult_line3_opA,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mult,binOpFault/gf_mult_line3_opB,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mult,binOpFault/gf_mult_line3_opB,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mult,binOpFault/gf_mult_line3_undef,correction_paired_result.txt,correction,yes,pos 0: 8/16 secret values with y1 = y2 xor alpha
+snova,gf_mult,binOpFault/gf_mult_line3_undef,ineffective_paired_result.txt,ineffective,yes,pos 0: 64/120 pairs disagree
+snova,gf_mult,binOpFault/gf_mult_line3_zero,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mult,binOpFault/gf_mult_line3_zero,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_mult,loadStoreSkip/gf_mult_line5_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_mult,loadStoreSkip/gf_mult_line5_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_set_add,binOpFault/gf_set_add_line2_opA,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_set_add,binOpFault/gf_set_add_line2_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_set_add,binOpFault/gf_set_add_line2_opA,ineffective_paired_result.txt,ineffective,yes,pos 0: 28/120 pairs disagree
+snova,gf_set_add,binOpFault/gf_set_add_line2_opB,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_set_add,binOpFault/gf_set_add_line2_opB,direct_leak_result.txt,direct_leak,yes,secret-buf: output 'a' equals input 'b' in all 16 trace(s) (the correct output differs from it in 16)
+snova,gf_set_add,binOpFault/gf_set_add_line2_opB,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_set_add,binOpFault/gf_set_add_line2_undef,correction_paired_result.txt,correction,yes,pos 0: 15/16 secret values with y1 = y2 xor alpha
+snova,gf_set_add,binOpFault/gf_set_add_line2_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_set_add,binOpFault/gf_set_add_line2_undef,ineffective_paired_result.txt,ineffective,yes,pos 0: 15/120 pairs disagree
+snova,gf_set_add,binOpFault/gf_set_add_line2_zero,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_set_add,binOpFault/gf_set_add_line2_zero,direct_leak_result.txt,direct_leak,yes,secret-buf: output 'a' equals input 'b' in all 16 trace(s) (the correct output differs from it in 16)
+snova,gf_set_add,binOpFault/gf_set_add_line2_zero,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_set_add,binOpFault/gf_set_add_line4_opA,correction_paired_result.txt,correction,yes,pos 0: 15/16 secret values with y1 = y2 xor alpha
+snova,gf_set_add,binOpFault/gf_set_add_line4_opA,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_set_add,binOpFault/gf_set_add_line4_opA,ineffective_paired_result.txt,ineffective,yes,pos 0: 15/120 pairs disagree
+snova,gf_set_add,binOpFault/gf_set_add_line4_opB,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_set_add,binOpFault/gf_set_add_line4_opB,direct_leak_result.txt,direct_leak,yes,secret-buf: output 'a' equals input 'b' in all 16 trace(s) (the correct output differs from it in 16)
+snova,gf_set_add,binOpFault/gf_set_add_line4_opB,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_set_add,binOpFault/gf_set_add_line4_undef,correction_paired_result.txt,correction,yes,pos 0: 15/16 secret values with y1 = y2 xor alpha
+snova,gf_set_add,binOpFault/gf_set_add_line4_undef,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_set_add,binOpFault/gf_set_add_line4_undef,ineffective_paired_result.txt,ineffective,yes,pos 0: 15/120 pairs disagree
+snova,gf_set_add,binOpFault/gf_set_add_line4_zero,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_set_add,binOpFault/gf_set_add_line4_zero,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_set_add,binOpFault/gf_set_add_line4_zero,ineffective_paired_result.txt,ineffective,yes,pos 0: 15/120 pairs disagree
+snova,gf_set_add,loadStoreSkip/gf_set_add_line0_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_set_add,loadStoreSkip/gf_set_add_line0_mem,direct_leak_result.txt,direct_leak,yes,secret-buf: output 'a' equals input 'b' in all 16 trace(s) (the correct output differs from it in 16)
+snova,gf_set_add,loadStoreSkip/gf_set_add_line0_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_set_add,loadStoreSkip/gf_set_add_line6_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_set_add,loadStoreSkip/gf_set_add_line6_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_set_add,loadStoreSkip/gf_set_add_line6_mem,ineffective_paired_result.txt,ineffective,yes,pos 0: 15/120 pairs disagree
+snova,gf_set_add,loadStoreSkip/gf_set_add_line7_mem,correction_paired_result.txt,correction,yes,pos 0: 15/16 secret values with y1 = y2 xor alpha
+snova,gf_set_add,loadStoreSkip/gf_set_add_line7_mem,direct_leak_result.txt,direct_leak,no,secret-buf: no faulty output equals input 'b'
+snova,gf_set_add,loadStoreSkip/gf_set_add_line7_mem,ineffective_paired_result.txt,ineffective,yes,pos 0: 15/120 pairs disagree
+snova,gf_sub,binOpFault/gf_sub_line1_opA,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_sub,binOpFault/gf_sub_line1_opA,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_sub,binOpFault/gf_sub_line1_opB,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_sub,binOpFault/gf_sub_line1_opB,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_sub,binOpFault/gf_sub_line1_undef,correction_paired_result.txt,correction,yes,pos 0: 8/16 secret values with y1 = y2 xor alpha
+snova,gf_sub,binOpFault/gf_sub_line1_undef,ineffective_paired_result.txt,ineffective,yes,pos 0: 64/120 pairs disagree
+snova,gf_sub,binOpFault/gf_sub_line1_zero,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_sub,binOpFault/gf_sub_line1_zero,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_sub,binOpFault/gf_sub_line3_opA,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_sub,binOpFault/gf_sub_line3_opA,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_sub,binOpFault/gf_sub_line3_opB,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_sub,binOpFault/gf_sub_line3_opB,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_sub,binOpFault/gf_sub_line3_undef,correction_paired_result.txt,correction,yes,pos 0: 8/16 secret values with y1 = y2 xor alpha
+snova,gf_sub,binOpFault/gf_sub_line3_undef,ineffective_paired_result.txt,ineffective,yes,pos 0: 64/120 pairs disagree
+snova,gf_sub,binOpFault/gf_sub_line3_zero,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_sub,binOpFault/gf_sub_line3_zero,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,gf_sub,loadStoreSkip/gf_sub_line5_mem,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,gf_sub,loadStoreSkip/gf_sub_line5_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,randombytes,loopOrFuncSkip/randombytes_fnSkip_memcpy_line29,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,randombytes,loopOrFuncSkip/randombytes_fnSkip_memcpy_line29,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,randombytes,loopOrFuncSkip/randombytes_fnSkip_memcpy_line35,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,randombytes,loopOrFuncSkip/randombytes_fnSkip_memcpy_line35,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,shake256,loopOrFuncSkip/shake256_fnSkip_shake_squeeze_line4,correction_paired_result.txt,correction,no,no position with disagreeing pairs
+snova,shake256,loopOrFuncSkip/shake256_fnSkip_shake_squeeze_line4,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,shake256_init,loadStoreSkip/shake256_init_line2_mem,correction_paired_result.txt,correction,yes,pos 208: 16/16 secret values with y1 = y2 xor alpha
+snova,shake256_init,loadStoreSkip/shake256_init_line2_mem,ineffective_paired_result.txt,ineffective,no,no position with disagreeing pairs
+snova,shake256_init,loopOrFuncSkip/shake256_init_fnSkip_memset_line0,correction_paired_result.txt,correction,yes,pos 0: 15/16 secret values with y1 = y2 xor alpha
+snova,shake256_init,loopOrFuncSkip/shake256_init_fnSkip_memset_line0,ineffective_paired_result.txt,ineffective,yes,pos 0: 15/120 pairs disagree

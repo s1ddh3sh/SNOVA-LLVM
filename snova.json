@@ -73,18 +73,40 @@
         "fixed-scalars": "r,mlen",
         "inout": "s_inc",
         "output": "s_inc",
-        "secret-buf": "m"
+        "secret-buf": "m",
+        "init": {
+            "r": 136,
+            "mlen": 32,
+            "s_inc": {
+                "u64@200": 0,
+                "u64@208": 136
+            }
+        }
     },
     "keccak_inc_finalize": {
         "fixed-scalars": "r,p",
         "inout": "s_inc",
         "output": "s_inc",
-        "secret-buf": "s_inc"
+        "secret-buf": "s_inc",
+        "init": {
+            "r": 136,
+            "s_inc": {
+                "u64@200": 0,
+                "u64@208": 136
+            }
+        }
     },
     "keccak_inc_squeeze": {
         "fixed-scalars": "outlen,r",
         "output": "h",
-        "secret-buf": "s_inc"
+        "secret-buf": "s_inc",
+        "init": {
+            "r": 136,
+            "s_inc": {
+                "u64@200": 0,
+                "u64@208": 136
+            }
+        }
     },
     "randombytes": {
         "fixed-scalars": "xlen",
@@ -94,7 +116,10 @@
     "shake256": {
         "fixed-scalars": "outlen,inlen",
         "output": "out",
-        "secret-buf": "in"
+        "secret-buf": "in",
+        "init": {
+            "inlen": 32
+        }
     },
     "shake256_init": {
         "inout": "instance",
@@ -105,16 +130,35 @@
         "fixed-scalars": "inlen",
         "inout": "instance",
         "output": "instance",
-        "secret-buf": "in"
+        "secret-buf": "in",
+        "init": {
+            "inlen": 32,
+            "instance": {
+                "u64@200": 0,
+                "u64@208": 136
+            }
+        }
     },
     "shake_finalize": {
         "inout": "instance",
         "output": "instance",
-        "secret-buf": "instance"
+        "secret-buf": "instance",
+        "init": {
+            "instance": {
+                "u64@200": 0,
+                "u64@208": 136
+            }
+        }
     },
     "shake_squeeze": {
         "fixed-scalars": "outlen",
         "output": "out",
-        "secret-buf": "instance"
+        "secret-buf": "instance",
+        "init": {
+            "instance": {
+                "u64@200": 0,
+                "u64@208": 136
+            }
+        }
     }
 }

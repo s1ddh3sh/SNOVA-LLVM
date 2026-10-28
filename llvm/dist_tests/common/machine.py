@@ -41,7 +41,9 @@ class EmulationError(RuntimeError):
 
     def __init__(self, message, machine=None):
         if machine is not None:
-            message = f"{message} at {machine.where()} after {machine.icount} insns"
+            message = f"{message} at {machine.where()}"
+            if machine.count_insns:
+                message += f" after {machine.icount} insns"
         super().__init__(message)
 
 
@@ -79,9 +81,14 @@ class Machine:
         m.call("crypto_sign_keypair", [pk, sk])
     """
 
-    def __init__(self, image, platform=MPS2_AN386, cpu=None):
+    def __init__(self, image, platform=MPS2_AN386, cpu=None, count_insns=True):
+        """count_insns=False drops the per-basic-block instruction counter
+        (icount stays 0): a Python callback on every block, ~18x the run
+        time of an -O0 SNOVA sign. Only timing needs it -- the SysTick
+        model and stub_cycle_counter()."""
         self.image = image
         self.platform = platform
+        self.count_insns = count_insns
         self.icount = 0
         self.exited = False
         self.exit_code = None
@@ -145,7 +152,8 @@ class Machine:
     def _install_core_hooks(self):
         uc = self.uc
         uc.hook_add(unicorn.UC_HOOK_INTR, self._hook_intr)
-        uc.hook_add(unicorn.UC_HOOK_BLOCK, self._hook_block)
+        if self.count_insns:
+            uc.hook_add(unicorn.UC_HOOK_BLOCK, self._hook_block)
         uc.hook_add(
             unicorn.UC_HOOK_MEM_READ_UNMAPPED
             | unicorn.UC_HOOK_MEM_WRITE_UNMAPPED
