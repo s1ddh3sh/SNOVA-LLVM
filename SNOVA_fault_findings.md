@@ -1,8 +1,8 @@
-# Ineffective- and Correction-Fault Findings on SNOVA (reference implementation)
+# Ineffective-, Correction-, and Vinegar-Distribution Fault Findings on SNOVA (reference implementation)
 
 **Status:** research evaluation via simulation-based fault-detection. Intended for
 responsible disclosure to the SNOVA team.
-**Date:** 2026-11-02
+**Date:** 2026-11-03
 **Target:** `SNOVA_I_S_AES` reference C implementation, this repository @ `76c43fc`
 **Parameter set:** v = 27, o = 5, l = 4, r = 4, q = 16, m1 = 5 (n = v + o = 32; l² = lr = 16;
 vinegar size v·l² = 432 GF(16) elements). NIST security level I.
@@ -23,20 +23,27 @@ vinegar size v·l² = 432 GF(16) elements). NIST security level I.
 - There is exactly **one** published fault attack on SNOVA: Banegas & Villanueva-Polanco,
   *A Fault Analysis on SNOVA* (ePrint 2024/1883 / arXiv 2509.12879). It uses a
   **value-fixing** model on the vinegar variables and recovers the secret `T12`.
-- No published work frames a SNOVA attack as an **ineffective-fault (SIFA-style)** or
-  **correction-fault** attack, nor as an **instruction-/store-skip** attack. That is the
-  class our methodology probes.
+- No published work frames a SNOVA attack as an **ineffective-fault (SIFA-style)**,
+  **correction-fault**, or **secret-independence (distribution-collapse)** attack, nor as
+  an **instruction-/store-skip** attack. That is the class our methodology probes.
+- Three tests in the suite are relevant to key recovery — **ineffective**, **correction**,
+  and the whole-program **vinegar-distribution** test (`vinegar_dist_snova.py`). §6 states,
+  per test, exactly what it detects, where it fired, and the path from that signal to `T12`.
 - Our sweep independently rediscovers the paper's injection point — the vinegar
   generation in `sign` — as an **ineffective leak reached by a store-skip** (stale value),
   not value-fixing. It also confirms the **Keccak-targeting route the paper explicitly
   declined** does leak on SNOVA.
 - From the code plus the detections we identify **two vectors we believe are new**:
   - **(A)** skipping the private-seed absorb makes the vinegar **fully known** to the
-    attacker ⇒ single-signature key recovery with no unknown constant to guess;
+    attacker ⇒ single-signature key recovery with no unknown constant to guess. This is
+    the vector the **vinegar-distribution test detects directly** (and the one the
+    value-level and ineffective tests structurally cannot — see §6.3);
   - **(C)** a vinegar-loop counter glitch produces **correlated** vinegar entries ⇒ a
     concrete instantiation of the related-randomness oracle the paper left open.
-- The paper's proposed countermeasure (their Algorithm 9) catches the value-fixing /
-  stale-store cases but **does not cover (A)** and only conditionally covers **(C)**.
+- A **value-level vinegar sanity check** (rejecting signatures whose fresh vinegar has too
+  many repeated/colliding values) would catch the value-fixing / stale-store cases but
+  **does not cover (A)**, whose vinegar stays correctly distributed and merely stops
+  depending on the secret (§7).
 
 ---
 
@@ -89,9 +96,12 @@ step the only prior fault paper targets.
 
 ## 2. Methodology
 
-The detections come from an LLVM/Unicorn Cortex-M4 ineffective-fault simulator. For each
-candidate fault location in a function it builds a *correct* and a *faulty* ELF, then runs
-three tests:
+The detections come from an LLVM/Unicorn Cortex-M4 fault simulator. For each candidate
+fault location in a function it builds a *correct* and a *faulty* ELF. Two complementary
+harnesses run against those ELFs:
+
+**(a) Per-function paired-sweep simulator** — runs three tests on each function in
+isolation:
 
 | Test | Question it answers |
 |---|---|
@@ -99,18 +109,27 @@ three tests:
 | **ineffective** | Over a paired sweep (secret values × public backgrounds), do the correct/faulty outputs *disagree in a secret-dependent way* — i.e. is the fault silently absorbed for some secrets but not others (the SIFA signal)? |
 | **correction** | Is the faulty output a *constant XOR offset* of the correct one across all backgrounds (y₁ = y₂ ⊕ α, α ≠ 0)? |
 
-Fault primitives swept: `binOpFault` (force an operand/op to `opA`/`opB`/`zero`/`undef`),
-`loadStoreSkip` (`_mem`: drop a load/store), and `loopOrFuncSkip` (`fnSkip`: skip a callee
-or loop body). "Detected = yes" means the corresponding test reported a secret-dependent
-effect.
+**(b) Whole-program gated-ELF tests** — fuse each faulty function back into the full
+program (`fuseback_gen.sh`), synthesise a `main` that calls `_SNOVA_I_S_AES_ref_sign`, and
+observe an internal quantity across a secret sweep. The key-recovery-relevant one here is
+the **vinegar-distribution** test (`vinegar_dist_snova.py`): it checks whether the signing
+**vinegar still depends on the private seed** (§6.3). (A sibling linearity test,
+`weak_system_snova.py`, probes whether the signature became a linear function of `T12`.)
+
+Fault primitives swept (both harnesses): `binOpFault` (force an operand/op to
+`opA`/`opB`/`zero`/`undef`), `loadStoreSkip` (`_mem`: drop a load/store), and
+`loopOrFuncSkip` (`fnSkip`: skip a callee or loop body). "Detected = yes" means the
+corresponding test reported a secret-dependent effect.
 
 **Sampling caveat (affects completeness, not correctness).** SNOVA stores one GF(16)
 element per byte (`gf_t = uint8_t`, low nibble), but seeds, `sk`/`skx`, messages, the salt,
-and the Keccak state are **raw bytes**. The sweep currently fills every input byte with a
-value in [0, 16) and sweeps the secret over 16 values. For the *byte*-input functions
-(`sign`, `crypto_sign`, `expand_T12`, the SHAKE/Keccak path) this exercises only the low
-nibble and leaves high nibbles zero, so their leak sets are likely **under-reported**. The
-GF-primitive results (`gf_*`, `compress_gf`) are unaffected. See §8.
+and the Keccak state are **raw bytes**. The per-function sweep currently fills every input
+byte with a value in [0, 16) and sweeps the secret over 16 values. For the *byte*-input
+functions (`sign`, `crypto_sign`, `expand_T12`, the SHAKE/Keccak path) this exercises only
+the low nibble and leaves high nibbles zero, so their leak sets are likely
+**under-reported**. The GF-primitive results (`gf_*`, `compress_gf`) are unaffected. See §9.
+(The vinegar-distribution test is not subject to this caveat: it sweeps full 32-byte private
+seeds.)
 
 ---
 
@@ -118,7 +137,7 @@ GF-primitive results (`gf_*`, `compress_gf`) are unaffected. See §8.
 
 | Work | What it does | Relation to these findings |
 |---|---|---|
-| **Banegas & Villanueva-Polanco, *A Fault Analysis on SNOVA*** — [ePrint 2024/1883](https://eprint.iacr.org/2024/1883), [arXiv 2509.12879](https://arxiv.org/html/2509.12879v1) | The only dedicated SNOVA fault attack. **Value-fixing** of vinegar entries `V_i` at Alg. 2 line 13; differencing many signatures cancels the fixed entries ⇒ linear systems ⇒ `T12`. Also a single-signature "fault-assisted reconciliation attack" (quadratic solve). 22–68 faulty signatures depending on level. Countermeasure = check the vinegar after line 13 (their Alg. 9). | We hit the **same injection point and secret**, but via **skip/ineffective** faults the paper does not model, plus **new** vinegar-control routes. |
+| **Banegas & Villanueva-Polanco, *A Fault Analysis on SNOVA*** — [ePrint 2024/1883](https://eprint.iacr.org/2024/1883), [arXiv 2509.12879](https://arxiv.org/html/2509.12879v1) | The only dedicated SNOVA fault attack. **Value-fixing** of vinegar entries `V_i` at Alg. 2 line 13; differencing many signatures cancels the fixed entries ⇒ linear systems ⇒ `T12`. Also a single-signature "fault-assisted reconciliation attack" (quadratic solve). 22–68 faulty signatures depending on level. Suggested defense = a value-level check on the freshly generated vinegar. | We hit the **same injection point and secret**, but via **skip/ineffective** faults the paper does not model, plus **new** vinegar-control routes. |
 | **Jendral & Dubrova, *MAYO Key Recovery by Fixing Vinegar Seeds*** | Faults **Keccak** to fix MAYO's vinegar. | The SNOVA paper explicitly declines this route ("instead of targeting Keccak, we focus directly on the vinegar variables"). Our Keccak/SHAKE detections show the route **does** bias SNOVA's vinegar — see §5. |
 | *One vector to rule them all* ([2023/1131](https://eprint.iacr.org/2023/1131)); *Oil, Vinegar, and Sparks* ([2026/154](https://eprint.iacr.org/2026/154)) | UOV-family: one oil-space vector ⇒ key; single-EM-fault key recovery. | Context for how little leaked structure UOV-type schemes need for key recovery. |
 
@@ -130,19 +149,25 @@ or correction faults. That is the gap this evaluation covers.
 
 ## 4. Detected leaks
 
-89 unique (function, fault, test) detections. Grouped by relevance to key recovery:
+89 unique (function, fault, test) detections from the per-function simulator, plus the one
+whole-program vinegar-distribution collapse. Grouped by relevance to key recovery:
 
 ### 4.1 Signing — direct hit on the vinegar (highest relevance)
 
 | Function | Fault | Test | Detail |
 |---|---|---|---|
 | `_SNOVA_I_S_AES_ref_sign` | `loadStoreSkip/..._line911_mem` | ineffective | `pos 6: 15/120 pairs disagree (+9 more positions)` |
+| `_SNOVA_I_S_AES_ref_sign` | `loopOrFuncSkip/..._fnSkip_shake_absorb_line168` | vinegar-distribution | vinegar frozen across all private seeds (FULL COLLAPSE) — see §6.3 |
 
 `line911` is the vinegar store `signature_in_GF[t_idx] = vinegar_in_byte >> 4`
 ([L908-911](src/snova_ref.c#L908-L911)). A skipped store leaves the **stale previous value**
 in that vinegar slot — a *fixed, unknown* vinegar entry that recurs across signatures. This
 is precisely the precondition of the prior paper's many-signature attack (its Alg. 3/4),
 reached by a cheap skip glitch instead of precise value control.
+
+`line168` (base-IR line for the private-seed absorb, source [L886](src/snova_ref.c#L886)) is
+the single location the vinegar-distribution test flags: skipping it removes the secret from
+the vinegar PRG entirely (vector A).
 
 ### 4.2 SHAKE / Keccak feeding the vinegar (the "declined" route)
 
@@ -182,14 +207,104 @@ appendix.
 
 | Detection | Prior-work status | Interpretation |
 |---|---|---|
-| `sign/line911_mem` (ineffective) | Banegas–VP injection point, **new fault primitive** | Their attack via **store-skip ⇒ stale-value fix** rather than value-fixing. Shows the countermeasure must also cover skipped stores, not only out-of-range values. |
+| `sign/line911_mem` (ineffective) | Banegas–VP injection point, **new fault primitive** | Their attack via **store-skip ⇒ stale-value fix** rather than value-fixing. Shows a defense must also cover skipped stores, not only out-of-range values. |
+| `sign/line168` seed-absorb skip (vinegar-distribution) | **new vector (A)** | Removes the secret from the vinegar ⇒ vinegar attacker-recomputable. Not value-fixing; a value-level check cannot see it. |
 | `shake*`/`keccak_*` leaks | route the paper **declined**; MAYO precedent | Confirms the Keccak-targeting variant biases SNOVA's vinegar. |
 | `expand_T12` / `genkeys` memcpy | outside the paper's model | Keygen-time weak-key route. |
 | `gf_*`, `compress_gf` | generic | SIFA primitive leakage; context-dependent. |
 
 ---
 
-## 6. New candidate attack vectors
+## 6. What each test detects, where, and the key-recovery path
+
+This section answers, per test: **what signal it looks for**, **which locations fired it**,
+and **how that signal becomes a `T12` recovery**. The three tests are complementary — they
+catch *different* fault classes, and no single one covers all of A–E.
+
+### 6.1 Ineffective (SIFA) test
+
+- **Signal.** Under a paired sweep (many secret values × public backgrounds), the fault is
+  *silently absorbed for some secrets and not others*. The pattern of "which secrets make
+  the fault visible" is itself secret-dependent — the classic SIFA leak.
+- **Locations that fired it.**
+  - `sign/line911_mem` — skipped vinegar store ⇒ a **stale, fixed-but-unknown** vinegar slot
+    (§4.1).
+  - `shake256_init`, `shake_absorb`, `keccak_inc_absorb` — the hash state feeding the
+    vinegar (§4.2).
+  - `genkeys`/`sk_expand` memcpy — keygen handling of `T12`/`sk` (§4.3).
+  - `gf_set_add`, `gf_mult`, `gf_sub`, `compress_gf` — GF primitives (§4.4).
+- **Key-recovery path.** When the ineffective fault lands on the vinegar, it produces a
+  vinegar entry that is **fixed but unknown** and **recurs across signatures**. Differencing
+  about `l·o + 2 = 22` signatures (this parameter set) cancels the fixed entry, leaving a
+  linear system in the oil variables whose solution yields `T12` — exactly Banegas–VP's
+  many-signature attack (their Alg. 3/4), now triggered by a cheap skip instead of precise
+  value control. For GF/Keccak primitives on the `T12`/vinegar path, the SIFA signal leaks
+  the intermediate GF value directly; off that path it is generic leakage with no key
+  consequence. → **vectors B, D, E.**
+
+### 6.2 Correction test
+
+- **Signal.** The faulty output is a **constant XOR offset** of the correct one across all
+  public backgrounds: `y_faulty = y_correct ⊕ α`, with the same `α ≠ 0` every time. This is
+  the fingerprint of a *deterministic* corruption (a zeroed/forced byte, a skipped
+  state-clear) that an attacker can model and invert, rather than a data-dependent one.
+- **Locations that fired it.**
+  - `shake256_init/..._memset_line0` and `..._line2_mem` — skipping/perturbing the Keccak
+    state clear leaves a **predictable** state (§4.2).
+  - `shake_absorb`, `shake_finalize`, and ~24 `keccak_inc_finalize` bin-op/mem faults — a
+    fixed offset on the sponge output (§4.2).
+  - `genkeys`/`sk_expand` memcpy and `crypto_sign_keypair/randombytes` — fixed corruption of
+    `sk`/seed material at keygen (§4.3).
+- **Key-recovery path.** A constant, secret-independent offset on the hash/state makes the
+  vinegar **predictably biased**: the attacker knows `α`, so the vinegar deviates from the
+  honest stream in a way they can account for, reducing the unknowns in `S = T⁻¹·V`. Where
+  the offset lands on `T12`/`sk` at keygen, it yields a **structurally weak key** (the
+  `S_i + Σ T12_ij S_{v+j} = V_i` relation partially collapses). Correction faults are thus
+  the "modelable corruption" counterpart to the ineffective test's "silent absorption." →
+  **vectors D, E** (and a predictable-bias assist to B).
+
+### 6.3 Vinegar-distribution (secret-dependence) test — `vinegar_dist_snova.py`
+
+- **Signal.** This is a *whole-program* test, not a value test. It holds `digest`, `salt`,
+  `num_sign` fixed and **sweeps the 32-byte private seed** over many values, capturing the
+  signing vinegar each time, then measures the **per-nibble-position Shannon entropy** of the
+  vinegar across the sweep:
+  - **correct build:** every position moves as the seed moves → entropy ≈ max (≈ 4 bits with
+    enough seeds); the vinegar is *secret-dependent* (healthy);
+  - **faulty build:** the position is *frozen* (entropy 0) → the vinegar no longer depends on
+    the secret. The verdict is the fraction of secret-dependent positions that collapse to
+    frozen (0 = none, 1 = **full collapse**).
+  Crucially the vinegar stays **statistically uniform** in both builds (the nibble histogram
+  is ~flat either way), so a frequency/chi-square test — and the ineffective/correction value
+  tests — **cannot** see this; only a secret-*dependence* measure can.
+- **Location that fired it.** Exactly **one** of the 112 sign-path faults:
+  `loopOrFuncSkip/..._fnSkip_shake_absorb_line168` — the skip of the **private-seed absorb**
+  (source [L886](src/snova_ref.c#L886)) — reports **FULL COLLAPSE** (all secret-dependent
+  positions frozen). Every other sign-path fault (binop/load-store/other skips) reports **no
+  collapse**. Off-signing-path functions (keygen, `sk_expand`) are never exercised by the
+  sign-only harness and so also report no collapse.
+- **Key-recovery path.** With L886 skipped, the vinegar is
+  `V = SHAKE256(digest ‖ salt ‖ num_sign)` — all public and present in the signature — so the
+  attacker **recomputes `V` exactly**. The reconciliation relation `S = T⁻¹·V` then has a
+  **fully known right-hand side**, strictly stronger than the paper's fixed-but-*unknown*
+  entry: no constant to guess, no quadratic search. In principle **one** faulty signature
+  pins the oil subspace and hence `T12`. → **vector A.**
+
+### 6.4 Summary
+
+| Test | Signal | Fired at (locations) | Vector(s) | Recovery path |
+|---|---|---|---|---|
+| **ineffective** | secret-dependent silent absorption (SIFA) | `sign/line911_mem`; `shake*`/`keccak_*`; keygen memcpy; `gf_*`/`compress_gf` | **B**, D, E | fixed-unknown vinegar ⇒ difference ~22 sigs ⇒ linear solve ⇒ `T12` |
+| **correction** | constant XOR offset `y₁=y₂⊕α` | `shake256_init`; `shake_finalize`; `keccak_inc_finalize`; keygen memcpy; `randombytes` | **D**, E (assist to B) | predictable bias / weak key ⇒ fewer unknowns in `S=T⁻¹V` |
+| **vinegar-distribution** | vinegar stops depending on the secret seed | `sign/..._fnSkip_shake_absorb_line168` (= src L886) | **A** | vinegar fully known ⇒ one signature ⇒ `T12` |
+
+Note that **vector C** (vinegar-loop counter glitch, §7) is not surfaced by any of these
+three tests as currently wired; it would need a dedicated check for *equalities among*
+vinegar entries.
+
+---
+
+## 7. New candidate attack vectors
 
 Ordered by impact. **(A)** and **(C)** are, to our reading, not in the prior literature.
 
@@ -209,8 +324,9 @@ paper's *fixed-but-unknown* `ω`: no unknown constant to guess, no quadratic sea
 In principle **one** faulty signature with its (now known) vinegar pins the oil subspace and
 hence `T12`.
 
-- Support: the `shake_absorb` `fnSkip` detection (§4.2) confirms the inner absorb is
-  skippable and secret-affecting.
+- **Detected directly** by the vinegar-distribution test (§6.3): the faulty build's vinegar
+  is frozen across all private seeds (FULL COLLAPSE), confirming the secret no longer enters
+  the stream.
 - Why it is new: the paper assumes the vinegar stays secret-keyed and only *fixes* it; here
   the secret dependence is *removed*, which their model does not consider.
 - Realism: a single instruction/function skip of the first of four absorbs — the kind of
@@ -221,8 +337,8 @@ hence `T12`.
 Skipping the store at [L908](src/snova_ref.c#L908) or [L910](src/snova_ref.c#L910) leaves a
 **stale, fixed-unknown** vinegar entry in the same slot every signature. Differencing ≥ l·o+2
 = **22** signatures (this parameter set) cancels the fixed entries and recovers `T12` — the
-paper's Alg. 3, triggered by a skip rather than value-fixing. Already flagged by our
-simulator as an ineffective leak.
+paper's Alg. 3, triggered by a skip rather than value-fixing. Flagged by the **ineffective**
+test (§6.1).
 
 ### 🟠 C. Vinegar-loop counter glitch ⇒ *correlated* vinegar  — **NEW**
 
@@ -231,13 +347,14 @@ source nibble fill **two** vinegar slots, forcing `V_{i,a} = V_{i,b}`. That yiel
 relations among vinegar entries** without fixing them — a concrete instantiation of the
 related-randomness oracle the paper defines (their §3.6) but says it "does not know how to
 instantiate… in a real scenario." Known equalities among vinegar entries add linear
-constraints that, combined across signatures, reduce the reconciliation/MinRank cost.
+constraints that, combined across signatures, reduce the reconciliation/MinRank cost. Not
+surfaced by the current three tests (§6.4) — would need an equality-among-entries check.
 
 ### 🟡 D. `shake256_init` zeroing skip
 
 The `shake256_init_fnSkip_memset_line0` detection: skipping the state `memset` leaves a
 stale/predictable Keccak state ⇒ biased vinegar, feeding A/B. SNOVA analogue of the MAYO
-Keccak fault.
+Keccak fault. Flagged by both the **ineffective** and **correction** tests (§6.1, §6.2).
 
 ### 🟡 E. Keygen-time `T12` fault
 
@@ -248,36 +365,38 @@ keygen), but a one-shot compromise.
 
 ---
 
-## 7. Countermeasure coverage
+## 8. Countermeasure coverage
 
-The paper's Algorithm 9 runs right after vinegar generation and rejects a signature if the
-freshly generated vinegar has too many repeated values / column collisions (value-level
-checks).
+The natural defense against the prior paper's value-fixing is a **value-level vinegar sanity
+check**: right after vinegar generation, reject the signature if the freshly generated
+vinegar has too many repeated values / column collisions. Whether such a check catches each
+vector:
 
-| Vector | Caught by their Alg. 9? | Why |
+| Vector | Caught by a value-level vinegar check? | Why |
 |---|---|---|
-| B (stale store), §6 | **Yes** | Stale/fixed values trip the repetition/column check. |
-| D (init skip), §6 | **Yes (likely)** | Biased values trip the value check. |
-| C (counter glitch), §6 | **Partially** | Only if forced equalities exceed the collision threshold Υ; small numbers of correlated entries pass. |
-| **A (seed-absorb skip), §6** | **No** | The vinegar is still correctly distributed — it is merely *secret-independent*. No value-level check detects that; only verifying that the private seed actually entered the hash would. |
+| B (stale store), §7 | **Yes** | Stale/fixed values trip the repetition/column check. |
+| D (init skip), §7 | **Yes (likely)** | Biased values trip the value check. |
+| C (counter glitch), §7 | **Partially** | Only if the forced equalities exceed the collision threshold; small numbers of correlated entries pass. |
+| **A (seed-absorb skip), §7** | **No** | The vinegar is still correctly distributed — it is merely *secret-independent* (this is exactly what the vinegar-distribution test in §6.3 measures). No value-level check sees that; only verifying that the private seed actually entered the hash would. |
 
-Recommendation for the countermeasure: in addition to the value checks, (i) bind a check
-that the **private seed was absorbed** (e.g. recompute/verify a seed-dependent tag before
-using the stream), and (ii) treat **skipped stores/absorbs** — not only out-of-range values
-— as part of the threat model.
+Recommendation: in addition to value-level checks, (i) bind a check that the **private seed
+was absorbed** (e.g. recompute/verify a seed-dependent tag before using the stream), and
+(ii) treat **skipped stores/absorbs** — not only out-of-range values — as part of the threat
+model.
 
 ---
 
-## 8. Limitations
+## 9. Limitations
 
-1. **Simulation only.** Detections are secret-dependent divergences in the Unicorn/LLVM
-   model, not executed key recoveries or hardware glitches. Each vector needs the algebra
-   implemented (differencing for B/C; the known-`V` solve for A) and ideally a
-   ChipWhisperer/EM confirmation, as in the prior paper.
-2. **Under-reporting on byte inputs.** As in §2, `sign`, `crypto_sign`, `expand_T12` and the
-   SHAKE/Keccak path were swept with low-nibble-only secret variation and zero high nibbles.
-   A full-byte sweep (0–255 secrets, 0–255 fills) may surface more of A–E. Re-running these
-   before disclosure is advised; the GF-primitive results are already complete.
+1. **Simulation only.** Detections are secret-dependent divergences / distribution collapses
+   in the Unicorn/LLVM model, not executed key recoveries or hardware glitches. Each vector
+   needs the algebra implemented (differencing for B/C; the known-`V` solve for A) and
+   ideally a ChipWhisperer/EM confirmation, as in the prior paper.
+2. **Under-reporting on byte inputs (per-function tests).** As in §2, `sign`, `crypto_sign`,
+   `expand_T12` and the SHAKE/Keccak path were swept with low-nibble-only secret variation
+   and zero high nibbles. A full-byte sweep (0–255 secrets, 0–255 fills) may surface more of
+   A–E. The GF-primitive results are already complete, and the vinegar-distribution test
+   (full 32-byte seed sweep) is unaffected.
 3. **Novelty is best-effort.** "NEW" means not found in the one SNOVA paper, the MAYO
    vinegar-seed work, or the UOV fault papers reviewed. A fuller literature pass may change
    this.
@@ -286,13 +405,13 @@ using the stream), and (ii) treat **skipped stores/absorbs** — not only out-of
 
 ---
 
-## 9. Recommendations
+## 10. Recommendations
 
 1. **Disclose A and C as new vectors**, B as "the known attack is reachable by instruction-
-   skip, so Alg. 9 must cover skipped stores/absorbs," and A specifically as **not covered**
-   by the proposed countermeasure.
+   skip, so any vinegar check must also cover skipped stores/absorbs," and A specifically as
+   **not covered** by a value-level vinegar check.
 2. **Harden vinegar generation:** verify the private seed entered the SHAKE stream;
-   checksum the vinegar-fill loop counters; keep the value-level checks of Alg. 9.
+   checksum the vinegar-fill loop counters; keep the value-level repetition/column checks.
 3. **Re-run the byte-input functions with full-byte sweeps** to close the under-reporting
    gap before finalizing the disclosure.
 
@@ -315,6 +434,19 @@ Source: `fault_report_snova.csv` @ `76c43fc`. Each row is a (function, fault, te
 awk -F, '$6=="yes"{print $2" | "$3" | "$5}' fault_report_snova.csv | sort -u
 ```
 
-See §4 for the grouped and interpreted view. Valid (non-error) timeouts — 9 load/store
-skips in `sign` that stall the signing loop, plus `shake_absorb`/`shake_squeeze`/`expand_T12`
-timeouts — are expected and excluded from the leak analysis.
+See §4 for the grouped and interpreted view, and §6 for the per-test / per-location
+key-recovery mapping. Valid (non-error) timeouts — 9 load/store skips in `sign` that stall
+the signing loop, plus `shake_absorb`/`shake_squeeze`/`expand_T12` timeouts — are expected
+and excluded from the leak analysis.
+
+## Appendix C. Reproducing the vinegar-distribution detection
+
+```sh
+# from the repo root; builds the gated ELFs on demand, then runs the test
+./llvm/dist_tests/snova/run_vinegar_dist_snova.sh _SNOVA_I_S_AES_ref_sign --n-seeds 48
+```
+
+Expected: of the 112 sign-path faulty builds, only
+`..._fnSkip_shake_absorb_line168` reports FULL COLLAPSE (vector A); all others report no
+collapse. Per-ELF results land under
+`llvm/test_snova/_SNOVA_I_S_AES_ref_sign/**/vinegar_dist_{result.txt,report.json}`.
