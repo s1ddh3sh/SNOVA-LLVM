@@ -103,6 +103,38 @@ static Instruction *findInstByLocator(Function &F, const InstLocator &loc) {
   }
   return getInstByIndex(F, loc.fallbackIndex);
 }
+
+// Fallback used when a loop cannot be bounded-unrolled (indeterminate or
+// too-large trip count). FuncSkip would otherwise bail and leave the fault
+// un-injected, so if the un-unrollable loop CONTAINS the located call we skip
+// that call directly -- erase it, exactly as DirectFuncSkip does for calls
+// that are not inside any loop. This matters for fnSkip faults whose call
+// sits inside a data-dependent loop, e.g. the vinegar generation inside
+// sign's do { ... } while (flag_redo) retry loop: its trip count is not a
+// compile-time constant, so without this the skip was silently a no-op.
+// Returns true if a matching call was found and erased.
+static bool eraseLocatedCallInLoop(Loop *L, const InstLocator &loc) {
+  std::vector<CallInst *> matches;
+  for (BasicBlock *BB : L->blocks())
+    for (Instruction &I : *BB)
+      if (auto *CI = dyn_cast<CallInst>(&I))
+        if (locMatches(CI, loc))
+          matches.push_back(CI);
+  for (CallInst *CI : matches) {
+    if (!CI->getType()->isVoidTy()) {
+      Value *replacement;
+      if (CI->arg_size() > 0 &&
+          CI->getArgOperand(0)->getType() == CI->getType())
+        replacement = CI->getArgOperand(0);
+      else
+        replacement = Constant::getNullValue(CI->getType());
+      CI->replaceAllUsesWith(replacement);
+    }
+    CI->eraseFromParent();
+  }
+  return !matches.empty();
+}
+
 class FuncSkip : public PassInfoMixin<FuncSkip> {
 private:
   InstLocator loc;
@@ -119,15 +151,25 @@ public:
     auto &SE = FAM.getResult<ScalarEvolutionAnalysis>(F);
 
     std::vector<Loop *> loops(LI.begin(), LI.end());
+    bool skippedTarget = false;
     for (Loop *L : loops) {
       unsigned tripCount = SE.getSmallConstantTripCount(L);
-      if (tripCount == 0) {
-        errs() << "cannot determine trip count\n";
-        continue;
-      }
-      if (tripCount > kMaxUnrollTripCount) {
-        errs() << "Loop trip count " << tripCount << " exceeds max ("
-               << kMaxUnrollTripCount << "); skipping unroll for this loop\n";
+      if (tripCount == 0 || tripCount > kMaxUnrollTripCount) {
+        // This loop can't be bounded-unrolled. If it contains the target
+        // call, skip that call directly so the fault is still injected --
+        // otherwise fnSkip faults inside data-dependent loops (e.g. the
+        // vinegar do { } while (flag_redo) retry loop) silently become no-ops.
+        if (!skippedTarget && eraseLocatedCallInLoop(L, loc)) {
+          errs() << "Loop trip count "
+                 << (tripCount == 0 ? "indeterminate" : "exceeds max")
+                 << "; skipped the located call directly (fallback)\n";
+          skippedTarget = true;
+        } else if (tripCount == 0) {
+          errs() << "cannot determine trip count\n";
+        } else {
+          errs() << "Loop trip count " << tripCount << " exceeds max ("
+                 << kMaxUnrollTripCount << "); skipping unroll for this loop\n";
+        }
         continue;
       }
       errs() << "Loop trip count: " << tripCount << "\n";
