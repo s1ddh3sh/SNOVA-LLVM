@@ -18,9 +18,17 @@
 #   4. run_correction_paired.sh
 #
 # Usage:
-#   ./run_combined_unicorn.sh <func_name> [--secret-buf NAME] [--secret-pos POS] \
+#   ./run_combined_unicorn.sh <func_name> [-j N] [--secret-buf NAME] [--secret-pos POS] \
 #       [--elf-dir DIR] [--fixed-scalars name1,name2,...] [--seed N] \
 #       [--seeds p0,p1,...] [--eph-draws J] [--out-buf NAME] [--field-mod N]
+#
+# -j, --jobs N: run up to N faulty-ELF collections concurrently in the
+# [1/3] phase (default: nproc). Each collection is independent (reads the
+# immutable correct ELF + shared read-only active_lengths.json, writes only
+# its own test_snova/<func>/<stem>/ dir), so this is a safe speed-up; the
+# per-ELF logs are replayed in order after the pool drains. Note that
+# run_tests_all.sh already parallelizes across FUNCTIONS, so when invoked
+# from there you may want a divided budget (outer x inner <= nproc).
 #
 # --eph-draws J: for a function with an "eph_secret" (snova.json), J
 # ephemeral draws r_0..r_{J-1}, independent of the public seeds; every
@@ -80,9 +88,16 @@ SEEDS="0,1,2,3"
 OUT_BUF_OVERRIDE=""
 FIELD_MOD=""
 EPH_DRAWS=4
+# Parallelism for the [1/3] collection phase: how many faulty-ELF collections
+# to run at once. Each collection is independent -- it only READS the
+# (immutable) correct ELF + the shared active_lengths.json and writes into
+# its OWN test_snova/<func>/<stem>/ dir, so there is no cross-collection
+# contention. Default to all cores.
+JOBS="$(nproc 2>/dev/null || echo 1)"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
+        -j|--jobs) JOBS="$2"; shift 2 ;;
         --secret-buf) SECRET_BUF_OVERRIDE="$2"; shift 2 ;;
         --secret-pos) SECRET_POS="$2"; shift 2 ;;
         --elf-dir) ELF_DIR="$2"; shift 2 ;;
@@ -95,6 +110,10 @@ while [[ $# -gt 0 ]]; do
         *) echo "[!] unrecognized argument: $1" >&2; exit 1 ;;
     esac
 done
+
+if ! [[ "$JOBS" =~ ^[0-9]+$ ]] || [[ "$JOBS" -lt 1 ]]; then
+    echo "[!] --jobs must be a positive integer (got: ${JOBS})" >&2; exit 1
+fi
 
 if [[ -z "$SECRET_POS" ]]; then
     echo "[!] --secret-pos POS is required" >&2
@@ -259,68 +278,117 @@ python3 "${SETUP_DIR}/calibrate_unicorn.py" \
     --out "$ACTIVE_LENGTHS" --fixed-scalars "$FIXED_SCALARS"
 
 echo ""
-echo "########## [1/3] collect_dist_unicorn.sh (${#FAULTY_ELFS[@]} faulty ELF(s)) ##########"
+echo "########## [1/3] collect_dist_unicorn.sh (${#FAULTY_ELFS[@]} faulty ELF(s), up to ${JOBS} in parallel) ##########"
 # A faulty ELF whose collection fails (most often a fault that loops until
 # collect_dist_unicorn.sh's timeout) gets test_snova/<func>/<stem>/
 # collect_failed.txt instead of sweeps: its partial dist_paired* dirs are
 # removed, the paired-test wrappers copy the note into its result files, and
 # the remaining faulty ELFs still run. A timeout note carries
 # "subprocess.TimeoutExpired" so generic_tests_plot.py plots it as a timeout.
-N_COLLECT_FAILED=0
-for faulty_elf in "${FAULTY_ELFS[@]}"; do
-    echo ""
-    echo "--- collect_dist (unicorn): ${FUNC_NAME} / $(basename "$faulty_elf") ---"
+#
+# The faulty ELFs are collected concurrently in a bounded pool of JOBS
+# workers. Each worker reads only the immutable correct ELF and the shared
+# read-only active_lengths.json, and writes solely into its own
+# test_snova/<func>/<stem>/ dir, so any number may run at once without
+# colliding. Each worker's console output is redirected (not tee'd) to a
+# per-faulty-ELF log so concurrent collections never interleave; the logs
+# are replayed in the original faulty-ELF order after the pool drains, and
+# the "collected"/"failed" verdict (0/1) is read back from COLLECT_RC_DIR
+# so the ordered pass can tally failures deterministically.
+COLLECT_LOG_DIR="$(mktemp -d)"
+COLLECT_RC_DIR="$(mktemp -d)"
+trap 'rm -rf "$COLLECT_LOG_DIR" "$COLLECT_RC_DIR"' EXIT
+
+# One faulty ELF: run its whole seed x eph-draw grid, self-contained. Called
+# with `&`, so it runs in a subshell -- the `set +e`/`set -e` toggles and the
+# `break 2` stay local to this job, and the parent's EXIT trap is reset in the
+# subshell (so a finishing worker never rm's the dirs out from under the rest).
+run_one_collect() {
+    local faulty_elf="$1"
+    local faulty_stem fault_out collect_failed dname p i j status collect_log
+    local log rc_key
     faulty_stem="$(realpath -s --relative-to="$ELF_DIR" "$faulty_elf")"
     faulty_stem="${faulty_stem%.elf}"
     fault_out="test_snova/${FUNC_NAME}/${faulty_stem}"
+    rc_key="${faulty_stem//\//_}"
+    log="${COLLECT_LOG_DIR}/${rc_key}.log"
     rm -f "${fault_out}/collect_failed.txt"
     collect_failed=0
-    for i in "${!SEED_LIST[@]}"; do
-        p="${SEED_LIST[$i]}"
-        for ((j = 0; j < EPH_DRAWS; j++)); do
-            # dist_paired[_seed<p>][_eph<j>] -- must match the grid that
-            # run_ineffective_paired.sh / run_correction_paired.sh read.
-            dname="dist_paired"
-            [[ $i -gt 0 ]] && dname="dist_paired_seed${p}"
-            [[ $j -gt 0 ]] && dname="${dname}_eph${j}"
-            COLLECT_ARGS=(
-                "$FUNC_NAME" "$CORRECT_ELF" "$faulty_elf" "$SECRET_BUF"
-                --secret-pos "$SECRET_POS"
-                --fixed-scalars "$FIXED_SCALARS"
-                --eph-secret "$EPH_SECRET" --eph-index "$j"
-                --seed "$p"
-                --dist-dir-name "$dname"
-            )
-            if [[ -n "$FIELD_MOD" ]]; then
-                COLLECT_ARGS+=(--field-mod "$FIELD_MOD")
-            fi
-            echo "    [seed p=${p}, eph draw r=${j}]"
-            collect_log="$(mktemp)"
-            set +e
-            "${SCRIPT_DIR}/collect_dist_unicorn.sh" "${COLLECT_ARGS[@]}" 2>&1 | tee "$collect_log"
-            status=${PIPESTATUS[0]}
-            set -e
-            if [[ "$status" -ne 0 ]]; then
-                mkdir -p "$fault_out"
-                rm -rf "${fault_out}"/dist_paired*
-                {
-                    if [[ "$status" -eq 124 ]]; then
-                        echo "[!] collection TIMED OUT (subprocess.TimeoutExpired) for seed p=${p}, eph draw r=${j}: the faulty ELF did not finish the sweep"
-                    else
-                        echo "[!] collection FAILED (exit ${status}) for seed p=${p}, eph draw r=${j}"
-                    fi
-                    echo "--- last lines of collect_dist_unicorn.sh ---"
-                    tail -n 15 "$collect_log"
-                } > "${fault_out}/collect_failed.txt"
+    {
+        echo "--- collect_dist (unicorn): ${FUNC_NAME} / $(basename "$faulty_elf") ---"
+        for i in "${!SEED_LIST[@]}"; do
+            p="${SEED_LIST[$i]}"
+            for ((j = 0; j < EPH_DRAWS; j++)); do
+                # dist_paired[_seed<p>][_eph<j>] -- must match the grid that
+                # run_ineffective_paired.sh / run_correction_paired.sh read.
+                dname="dist_paired"
+                [[ $i -gt 0 ]] && dname="dist_paired_seed${p}"
+                [[ $j -gt 0 ]] && dname="${dname}_eph${j}"
+                COLLECT_ARGS=(
+                    "$FUNC_NAME" "$CORRECT_ELF" "$faulty_elf" "$SECRET_BUF"
+                    --secret-pos "$SECRET_POS"
+                    --fixed-scalars "$FIXED_SCALARS"
+                    --eph-secret "$EPH_SECRET" --eph-index "$j"
+                    --seed "$p"
+                    --dist-dir-name "$dname"
+                )
+                if [[ -n "$FIELD_MOD" ]]; then
+                    COLLECT_ARGS+=(--field-mod "$FIELD_MOD")
+                fi
+                echo "    [seed p=${p}, eph draw r=${j}]"
+                collect_log="$(mktemp)"
+                set +e
+                "${SCRIPT_DIR}/collect_dist_unicorn.sh" "${COLLECT_ARGS[@]}" 2>&1 | tee "$collect_log"
+                status=${PIPESTATUS[0]}
+                set -e
+                if [[ "$status" -ne 0 ]]; then
+                    mkdir -p "$fault_out"
+                    rm -rf "${fault_out}"/dist_paired*
+                    {
+                        if [[ "$status" -eq 124 ]]; then
+                            echo "[!] collection TIMED OUT (subprocess.TimeoutExpired) for seed p=${p}, eph draw r=${j}: the faulty ELF did not finish the sweep"
+                        else
+                            echo "[!] collection FAILED (exit ${status}) for seed p=${p}, eph draw r=${j}"
+                        fi
+                        echo "--- last lines of collect_dist_unicorn.sh ---"
+                        tail -n 15 "$collect_log"
+                    } > "${fault_out}/collect_failed.txt"
+                    rm -f "$collect_log"
+                    echo "[!] ${faulty_stem}: collection failed (exit ${status}); skipping this faulty ELF -> ${fault_out}/collect_failed.txt" >&2
+                    collect_failed=1
+                    break 2
+                fi
                 rm -f "$collect_log"
-                echo "[!] ${faulty_stem}: collection failed (exit ${status}); skipping this faulty ELF -> ${fault_out}/collect_failed.txt" >&2
-                N_COLLECT_FAILED=$((N_COLLECT_FAILED + 1))
-                collect_failed=1
-                break 2
-            fi
-            rm -f "$collect_log"
+            done
         done
-    done
+    } > "$log" 2>&1
+    echo "$collect_failed" > "${COLLECT_RC_DIR}/${rc_key}.rc"
+}
+
+# Bounded job pool: launch up to JOBS collections at once, throttling with
+# `wait -n`. Same pattern as run_tests_all.sh's function-level pool.
+active=0
+for faulty_elf in "${FAULTY_ELFS[@]}"; do
+    run_one_collect "$faulty_elf" &
+    active=$((active + 1))
+    if (( active >= JOBS )); then
+        wait -n 2>/dev/null || wait
+        active=$((active - 1))
+    fi
+done
+wait
+
+# Deterministic replay + tally: iterate the faulty ELFs in their original
+# order, print each collection's captured log, and read back its 0/1 verdict.
+N_COLLECT_FAILED=0
+for faulty_elf in "${FAULTY_ELFS[@]}"; do
+    faulty_stem="$(realpath -s --relative-to="$ELF_DIR" "$faulty_elf")"
+    faulty_stem="${faulty_stem%.elf}"
+    rc_key="${faulty_stem//\//_}"
+    echo ""
+    [[ -f "${COLLECT_LOG_DIR}/${rc_key}.log" ]] && cat "${COLLECT_LOG_DIR}/${rc_key}.log"
+    collect_failed="$(cat "${COLLECT_RC_DIR}/${rc_key}.rc" 2>/dev/null || echo 1)"
+    [[ "$collect_failed" -ne 0 ]] && N_COLLECT_FAILED=$((N_COLLECT_FAILED + 1))
 done
 [[ "$N_COLLECT_FAILED" -gt 0 ]] && echo "[!] ${N_COLLECT_FAILED}/${#FAULTY_ELFS[@]} faulty ELF(s) could not be collected (see their collect_failed.txt)"
 

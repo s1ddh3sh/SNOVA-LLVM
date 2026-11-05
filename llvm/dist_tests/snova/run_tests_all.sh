@@ -19,7 +19,12 @@
 # Usage:
 #   ./dist_tests/snova/run_tests_all.sh [-j N] [--seeds LIST] [--csv FILE] [func ...]
 #
-#   -j, --jobs N    number of concurrent workers (default: nproc)
+#   -j, --jobs N    number of concurrent FUNCTION workers (default: nproc).
+#                   Each worker is handed an inner -j of max(1, nproc/N) for
+#                   its own faulty-ELF collection sweep, so outer x inner
+#                   never exceeds nproc. Default -j nproc -> inner 1 (each
+#                   function serial internally); lower -j to feed the freed
+#                   cores into each function's collection sweep.
 #   --seeds LIST    seeds passed to run_combined_unicorn.sh (default: 0,1,2,3)
 #   --csv FILE      timing CSV output path (default: test_snova/run_tests_all_timing.csv)
 #   func ...        only these functions (default: every key in snova.json)
@@ -87,7 +92,18 @@ fi
 [[ "${#FUNCS[@]}" -gt 0 ]] || { echo "[!] no functions to run" >&2; exit 1; }
 (( JOBS > ${#FUNCS[@]} )) && JOBS=${#FUNCS[@]}
 
-echo "[i] running ${#FUNCS[@]} function(s) with ${JOBS} concurrent worker(s); seeds=${SEEDS}"
+# Inner parallelism budget handed to each run_combined_unicorn.sh worker
+# (its own -j, over faulty-ELF collections). We divide the machine's cores
+# by the number of OUTER (function-level) workers so outer x inner never
+# oversubscribes: outer*inner <= nproc. With the default -j nproc, outer is
+# capped at #funcs and inner collapses to 1 (today's exact behavior); lower
+# -j to run fewer functions at once and feed the freed cores into each
+# function's own collection sweep.
+NPROC="$(nproc 2>/dev/null || echo 1)"
+INNER_JOBS=$(( NPROC / JOBS ))
+(( INNER_JOBS < 1 )) && INNER_JOBS=1
+
+echo "[i] running ${#FUNCS[@]} function(s) with ${JOBS} concurrent worker(s); seeds=${SEEDS}; inner -j ${INNER_JOBS} (nproc=${NPROC})"
 
 WALL_START="$(date +%s.%N)"
 
@@ -108,7 +124,7 @@ run_one() {
         if "$SNOVA_BUILD" "test_snova/${func}"; then
             echo
             echo "=== [test] ${RUN_UNICORN} ${func} --seeds ${SEEDS} ==="
-            if "$RUN_UNICORN" "$func" --seeds "$SEEDS"; then status="ok"; else status="test"; fi
+            if "$RUN_UNICORN" "$func" --seeds "$SEEDS" -j "$INNER_JOBS"; then status="ok"; else status="test"; fi
         else
             status="build"
         fi
